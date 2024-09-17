@@ -18,10 +18,11 @@ def count_flops_internvl2(model_name,
         low_cpu_mem_usage=True,
         use_flash_attn=False,
         trust_remote_code=True).eval()
+    model.to(device=device)
     tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True, use_fast=False)
 
     # set the max number of tiles in `max_num`
-    pixel_values = load_image(image, max_num=num_slices).to(torch.bfloat16)
+    pixel_values = load_image(image, max_num=num_slices).to(device=device, dtype=torch.bfloat16)
     generation_config = dict(max_new_tokens=max_new_tokens, do_sample=False)
 
     # single-image single-round conversation (单图单轮对话)
@@ -48,9 +49,9 @@ def count_flops_internvl2(model_name,
         query = query.replace('<image>', image_tokens, 1)
 
     model_inputs = tokenizer(query, return_tensors='pt')
-    generation_config['input_ids'] = model_inputs['input_ids']
+    generation_config['input_ids'] = model_inputs['input_ids'].to(device=device)
     generation_config['eos_token_id'] = eos_token_id
-    generation_config['attention_mask'] = model_inputs['attention_mask']
+    generation_config['attention_mask'] = model_inputs['attention_mask'].to(device=device)
     generation_config['pixel_values'] = pixel_values
 
     calculate_flops(model=model,
