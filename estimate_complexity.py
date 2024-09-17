@@ -1,4 +1,6 @@
 from MiniCPM_V.calculate_flops import *
+from Phi_Vision.calculate_flops import *
+from InternVL2.calculate_flops import *
 import argparse
 
 if __name__ == '__main__':
@@ -22,3 +24,21 @@ if __name__ == '__main__':
                             max_new_tokens = args.max_new_tokens,
                             num_slices = args.num_slices
                             )
+    
+    elif "Phi" in args.model_name:
+        count_flops_phi(model_name=args.model_name,
+                        image=image,
+                        prompt=args.query,
+                        device=args.device,
+                        max_new_tokens=args.max_new_tokens,
+                        num_slices=args.num_slices
+                        )
+
+    elif "InternVL2" in args.model_name:
+        count_flops_internvl2(model_name=args.model_name,
+                              image=image,
+                              prompt=args.query,
+                              device=args.device,
+                              max_new_tokens=args.max_new_tokens,
+                              num_slices=args.num_slices
+                              )
