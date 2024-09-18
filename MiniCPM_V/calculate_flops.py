@@ -1,6 +1,5 @@
 from calflops import calculate_flops
 import torch
-from transformers import AutoModel, AutoTokenizer, AutoProcessor
 from PIL import Image
 
 def get_inputs_minicpmv(image,
@@ -119,6 +118,13 @@ def get_inputs_minicpmv_2_5_llama3(image,
 
     return params
 
+def manage_inports():
+    import transformers
+    if transformers.__version__ == '4.40.2':
+        return True
+    else:
+        pip.main(['install', 'transformers==4.40.2'])
+        return False
 
 def count_flops_minicpm(model_name,
                         image,
@@ -126,6 +132,14 @@ def count_flops_minicpm(model_name,
                         device = 'cuda',
                         max_new_tokens = 1024,
                         num_slices = 4):
+
+    installed = manage_inports()
+    if not installed:
+        print('Transformers package version has been changed, please re-run the command')
+        return
+
+    from transformers import AutoModel, AutoTokenizer, AutoProcessor
+
     model = AutoModel.from_pretrained(model_name, trust_remote_code=True, torch_dtype=torch.bfloat16, attn_implementation='sdpa')
     model = model.to(device=device, dtype=torch.bfloat16)
     tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
@@ -144,7 +158,6 @@ def count_flops_minicpm(model_name,
 
     else:
         print("Model not recognized. Available models from MiniCPM are openbmb/MiniCPM-V, openbmb/MiniCPM-V-2, openbmb/MiniCPM-V-2_6 are openbmb/MiniCPM-Llama3-V-2_5")
-
 
     calculate_flops(model=model,
                     forward_mode = 'generate',
