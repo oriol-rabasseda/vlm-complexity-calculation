@@ -2,6 +2,7 @@ from MiniCPM_V.calculate_flops import *
 from Phi_Vision.calculate_flops import *
 from InternVL2.calculate_flops import *
 from Qwen2.calculate_flops import *
+from LlavaNext.calculate_flops import *
 #from VILA.calculate_flops import *
 import argparse
 
@@ -18,7 +19,7 @@ if __name__ == '__main__':
 
     image = Image.open(args.image_file).convert('RGB')
 
-    if "MiniCPM" in args.model_name:
+    if "openbmb" in args.model_name:
         count_flops_minicpm(model_name = args.model_name,
                             image = image,
                             prompt = args.query,
@@ -27,7 +28,7 @@ if __name__ == '__main__':
                             num_slices = args.num_slices
                             )
     
-    elif "Phi" in args.model_name:
+    elif "microsoft" in args.model_name:
         count_flops_phi(model_name=args.model_name,
                         image=image,
                         prompt=args.query,
@@ -36,7 +37,7 @@ if __name__ == '__main__':
                         num_slices=args.num_slices
                         )
 
-    elif "InternVL2" in args.model_name:
+    elif "OpenGVLab" in args.model_name:
         count_flops_internvl2(model_name=args.model_name,
                               image=image,
                               prompt=args.query,
@@ -45,7 +46,7 @@ if __name__ == '__main__':
                               num_slices=args.num_slices
                               )
     
-    elif "Qwen2" in args.model_name:
+    elif "Qwen" in args.model_name:
         count_flops_qwen2(model_name=args.model_name,
                           image_name=args.image_file,
                           prompt=args.query,
@@ -53,7 +54,14 @@ if __name__ == '__main__':
                           max_new_tokens=args.max_new_tokens
                           )
     
-    elif 
+    elif "llava-hf" in args.model_name:
+        count_flops_llavanext(model_name=args.model_name,
+                              image=image,
+                              prompt=args.query,
+                              device=args.device,
+                              max_new_tokens=args.max_new_tokens,
+                              num_slices=args.num_slices
+                              )
 
     '''
     elif "VILA" in args.model_name:
