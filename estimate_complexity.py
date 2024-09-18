@@ -1,6 +1,8 @@
 from MiniCPM_V.calculate_flops import *
 from Phi_Vision.calculate_flops import *
 from InternVL2.calculate_flops import *
+from Qwen2.calculate_flops import *
+#from VILA.calculate_flops import *
 import argparse
 
 if __name__ == '__main__':
@@ -42,3 +44,23 @@ if __name__ == '__main__':
                               max_new_tokens=args.max_new_tokens,
                               num_slices=args.num_slices
                               )
+    
+    elif "Qwen2" in args.model_name:
+        count_flops_qwen2(model_name=args.model_name,
+                          image_name=args.image_file,
+                          prompt=args.query,
+                          device=args.device,
+                          max_new_tokens=args.max_new_tokens
+                          )
+    
+    elif 
+
+    '''
+    elif "VILA" in args.model_name:
+        count_flops_vila(model_name=args.model_name,
+                         image=image,
+                         prompt=args.query,
+                         device=args.device,
+                         max_new_tokens=args.max_new_tokens
+                         )
+    '''

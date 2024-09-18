@@ -1,8 +1,17 @@
-from calflops import calculate_flops
-import torch
-from transformers import AutoModel, AutoTokenizer
 from .utils import *
 import importlib
+from calflops import calculate_flops
+import torch
+import pip
+
+def manage_inports():
+    import transformers
+    if transformers.__version__ == '4.40.2':
+        return True
+    else:
+        pip.main(['install', 'transformers==4.40.2'])
+        return False
+
 
 def count_flops_internvl2(model_name,
                           image,
@@ -10,6 +19,13 @@ def count_flops_internvl2(model_name,
                           device = 'cuda',
                           max_new_tokens = 1024,
                           num_slices = 4):
+
+    installed = manage_inports()
+    if not installed:
+        print('Transformers package version has been changed, please re-run the command')
+        return
+    
+    from transformers import AutoModel, AutoTokenizer
 
     # If you want to load a model using multiple GPUs, please refer to the `Multiple GPUs` section.
     model = AutoModel.from_pretrained(
