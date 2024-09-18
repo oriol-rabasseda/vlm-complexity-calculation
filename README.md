@@ -29,6 +29,8 @@ The set of models supported and tested is the following, future methods will als
 | InternVL2  | InternVL2-8B         | OpenGVLab/InternVL2-1B               | [🤗](https://huggingface.co/OpenGVLab/InternVL2-8B)               |
 | Phi-Vision | Phi 3 Vision         | microsoft/Phi-3.5-vision-instruct    | [🤗](https://huggingface.co/microsoft/Phi-3.5-vision-instruct)    |
 | Phi-Vision | Phi 3.5 Vision       | microsoft/Phi-3-vision-128k-instruct | [🤗](https://huggingface.co/microsoft/Phi-3-vision-128k-instruct) |
+| Qwen2-VL   | Qwen2-VL-2B          | Qwen/Qwen2-VL-2B-Instruct            | [🤗](https://huggingface.co/Qwen/Qwen2-VL-2B-Instruct)            |
+| Qwen2-VL   | Qwen2-VL-7B          | Qwen/Qwen2-VL-7B-Instruct            | [🤗](https://huggingface.co/Qwen/Qwen2-VL-7B-Instruct)            |
 
 ## Execution
 To run the tool, please run the following command:
