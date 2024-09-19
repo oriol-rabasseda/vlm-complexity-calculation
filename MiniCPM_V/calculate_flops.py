@@ -1,6 +1,7 @@
 from calflops import calculate_flops
 import torch
 from PIL import Image
+import pip
 
 def get_inputs_minicpmv(image,
                         model,
