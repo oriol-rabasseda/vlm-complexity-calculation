@@ -15,7 +15,7 @@ def count_flops_phi(model_name,
         device_map=device,
         trust_remote_code=True,
         torch_dtype="auto",
-        _attn_implementation='eager'
+        _attn_implementation='eager' # "flash_attention_2"
     )
 
     processor = AutoProcessor.from_pretrained(model_name,

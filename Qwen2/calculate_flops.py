@@ -24,7 +24,8 @@ def count_flops_qwen2(model_name,
     from transformers import Qwen2VLForConditionalGeneration, AutoTokenizer, AutoProcessor
 
     model = Qwen2VLForConditionalGeneration.from_pretrained(
-        model_name, torch_dtype="auto", device_map=device
+        model_name, torch_dtype=torch.bfloat16, device_map="auto",
+        attn_implementation="flash_attention_2"
     )
 
     # default processer
@@ -56,7 +57,10 @@ def count_flops_qwen2(model_name,
         return_tensors="pt",
     )
     inputs = inputs
-    inputs['max_new_tokens'] = max_new_tokens
+    inputs = inputs.to("cuda")
+    inputs.update({'max_new_tokens': max_new_tokens})
+
+    model.generate(**inputs)
 
     calculate_flops(model=model,
                     forward_mode = 'generate',
