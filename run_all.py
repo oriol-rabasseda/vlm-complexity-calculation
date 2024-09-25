@@ -12,12 +12,12 @@ from estimate_complexity import select_model
 
 ### LLaVa ###
 #select_model("llava-hf/llava-v1.6-mistral-7b-hf", print_file="outputs/Llava/llava-v1.6-mistral-7b-hf.txt")
-#select_model("llava-hf/llava-v1.6-vicuna-7b-hf", print_file="outputs/Llava/llava-v1.6-vicuna-7b-hf.txt)
-#select_model("llava-hf/llama3-llava-next-8b-hf", print_file="outputs/Llava/llama3-llava-next-8b-hf.txt)
-#select_model("llava-hf/llava-onevision-qwen2-0.5b-ov-hf", print_file="outputs/Llava/llava-onevision-qwen2-0.5b-ov-hf.txt)
-#select_model("llava-hf/llava-onevision-qwen2-0.5b-si-hf", print_file="outputs/Llava/llava-onevision-qwen2-0.5b-si-hf.txt)
-#select_model("llava-hf/llava-onevision-qwen2-7b-ov-hf", print_file="outputs/Llava/llava-onevision-qwen2-7b-ov-hf.txt)
-#select_model("llava-hf/llava-onevision-qwen2-7b-si-hf", print_file="outputs/Llava/llava-onevision-qwen2-7b-si-hf.txt)
+#select_model("llava-hf/llava-v1.6-vicuna-7b-hf", print_file="outputs/Llava/llava-v1.6-vicuna-7b-hf.txt")
+#select_model("llava-hf/llama3-llava-next-8b-hf", print_file="outputs/Llava/llama3-llava-next-8b-hf.txt")
+#select_model("llava-hf/llava-onevision-qwen2-0.5b-ov-hf", print_file="outputs/Llava/llava-onevision-qwen2-0.5b-ov-hf.txt")
+#select_model("llava-hf/llava-onevision-qwen2-0.5b-si-hf", print_file="outputs/Llava/llava-onevision-qwen2-0.5b-si-hf.txt")
+#select_model("llava-hf/llava-onevision-qwen2-7b-ov-hf", print_file="outputs/Llava/llava-onevision-qwen2-7b-ov-hf.txt")
+#select_model("llava-hf/llava-onevision-qwen2-7b-si-hf", print_file="outputs/Llava/llava-onevision-qwen2-7b-si-hf.txt")
 
 ### InternVL2 ###
 #select_model("OpenGVLab/InternVL2-1B", print_file="outputs/InternVL2/InternVL2-1B.txt")

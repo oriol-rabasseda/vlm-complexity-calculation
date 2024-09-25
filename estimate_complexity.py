@@ -78,7 +78,7 @@ def select_model(model_name="openbmb/MiniCPM-V",
                          )
     '''
 
-    if result != "":
+    if result != "" and result:
         if print_file != "":
             f = open(print_file, "w")
             f.write(result)

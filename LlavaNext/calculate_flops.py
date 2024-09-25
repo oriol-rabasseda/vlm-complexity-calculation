@@ -3,6 +3,7 @@ import torch
 from PIL import Image
 from calflops import calculate_flops
 from packaging.version import Version
+from utils import *
 
 def manage_imports():
     import transformers
@@ -16,6 +17,7 @@ def manage_imports():
 def count_flops_llavanext(model_name,
                           image,
                           prompt,
+                          seq_len=128,
                           device = 'cuda',
                           max_new_tokens = 1024):
     conversation = [
@@ -57,8 +59,13 @@ def count_flops_llavanext(model_name,
     inputs = processor(images=image, text=prompt_aux, return_tensors='pt').to(device, torch.float16)
     inputs["max_new_tokens"] = max_new_tokens
 
-    calculate_flops(model=model,
-                    forward_mode = 'generate',
-                    kwargs = inputs,
-                    output_precision = 4,
-                    output_unit = 'T')
+    if prompt == "":
+        inputs = get_raw_input(processor.tokenizer, seq_len, inputs, device)
+
+    _, _, _, result = calculate_flops(model=model,
+                                      forward_mode = 'generate',
+                                      kwargs = inputs,
+                                      output_precision = 4,
+                                      output_unit = 'T')
+    
+    return result
