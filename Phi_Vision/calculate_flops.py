@@ -47,8 +47,10 @@ def count_flops_phi(model_name,
     if prompt == "":
         inputs = get_raw_input(processor.tokenizer, seq_len, inputs, device)
 
-    calculate_flops(model=model,
-                    forward_mode = 'generate',
-                    kwargs = inputs,
-                    output_precision = 4,
-                    output_unit = 'T')
+    _, _, _, result = calculate_flops(model=model,
+                                      forward_mode = 'generate',
+                                      kwargs = inputs,
+                                      output_precision = 4,
+                                      output_unit = 'T')
+
+    return result

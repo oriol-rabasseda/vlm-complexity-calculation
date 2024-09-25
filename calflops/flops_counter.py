@@ -173,9 +173,10 @@ def calculate_flops(model,
     params = calculate_flops_pipline.get_total_params()
 
     if print_results:
-        return_print = calculate_flops_pipline.print_model_pipline(units=output_unit,
-                                                                   precision=output_precision,
-                                                                   print_detailed=print_detailed)
+        return_print = calculate_flops_pipline.print_return_model_pipline(units=output_unit,
+                                                                          precision=output_precision,
+                                                                          print_detailed=print_detailed,
+                                                                          print_results=False)
 
     calculate_flops_pipline.end_flops_calculate()
 
@@ -183,9 +184,19 @@ def calculate_flops(model,
         flops = flops * (1 + compute_bp_factor)
         macs = macs * (1 + compute_bp_factor)
 
-    if output_as_string:
-        return flops_to_string(flops, units=output_unit, precision=output_precision), \
-            macs_to_string(macs, units=output_unit, precision=output_precision), \
-            params_to_string(params, units=output_unit, precision=output_precision)
+    if print_results:
+        if output_as_string:
+            return flops_to_string(flops, units=output_unit, precision=output_precision), \
+                macs_to_string(macs, units=output_unit, precision=output_precision), \
+                params_to_string(params, units=output_unit, precision=output_precision), \
+                return_print
 
-    return flops, macs, params
+        return flops, macs, params, return_print
+
+    else:
+        if output_as_string:
+            return flops_to_string(flops, units=output_unit, precision=output_precision), \
+                macs_to_string(macs, units=output_unit, precision=output_precision), \
+                params_to_string(params, units=output_unit, precision=output_precision)
+
+        return flops, macs, params

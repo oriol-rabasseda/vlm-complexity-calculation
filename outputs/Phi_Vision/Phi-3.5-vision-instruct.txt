@@ -1,0 +1,101 @@
+
+------------------------------------- Calculate Flops Results -------------------------------------
+Notations:
+number of parameters (Params), number of multiply-accumulate operations(MACs),
+number of floating-point operations (FLOPs), floating-point operations per second (FLOPS),
+fwd FLOPs (model forward propagation FLOPs), bwd FLOPs (model backward propagation FLOPs),
+default model backpropagation takes 2.00 times as much computation as forward propagation.
+
+Total Training Params:                                                  4.15 B  
+fwd MACs:                                                               4.4646 TMACs
+fwd FLOPs:                                                              9.4847 TFLOPS
+fwd+bwd MACs:                                                           13.3937 TMACs
+fwd+bwd FLOPs:                                                          28.4541 TFLOPS
+
+-------------------------------- Detailed Calculated FLOPs Results --------------------------------
+Each module caculated is listed after its name in the following order: 
+params, percentage of total params, MACs, percentage of total MACs, FLOPS, percentage of total FLOPs
+
+Note: 1. A module can have torch.nn.module or torch.nn.functional to compute logits (e.g. CrossEntropyLoss). 
+ They are not counted as submodules in calflops and not to be printed out. However they make up the difference between a parent's MACs and the sum of its submodules'.
+2. Number of floating-point operations is a theoretical estimation, thus FLOPS computed using that could be larger than the maximum system throughput.
+
+Phi3VForCausalLM(
+  4.15 B = 100% Params, 4.46 TMACs = 100% MACs, 9.48 TFLOPS = 100% FLOPs
+  (model): Phi3VModel(
+    4.05 B = 97.6246% Params, 4.38 TMACs = 98.0232% MACs, 9.31 TFLOPS = 98.139% FLOPs
+    (embed_tokens): Embedding(98.5 M = 2.3754% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, 32064, 3072, padding_idx=32000)
+    (embed_dropout): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+    (vision_embed_tokens): Phi3ImageEmbedding(
+      424.04 M = 10.2262% Params, 971.46 GMACs = 21.7595% MACs, 1.95 TFLOPS = 20.5075% FLOPs
+      (drop): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+      (wte): Embedding(98.5 M = 2.3754% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, 32064, 3072, padding_idx=32000)
+      (img_processor): CLIPVisionModel(
+        303.51 M = 7.3194% Params, 954.8 GMACs = 21.3861% MACs, 1.91 TFLOPS = 20.156% FLOPs
+        (vision_model): CLIPVisionTransformer(
+          303.51 M = 7.3194% Params, 954.8 GMACs = 21.3861% MACs, 1.91 TFLOPS = 20.156% FLOPs
+          (embeddings): CLIPVisionEmbeddings(
+            1.19 M = 0.0288% Params, 1.73 GMACs = 0.0388% MACs, 3.47 GFLOPS = 0.0366% FLOPs
+            (patch_embedding): Conv2d(602.11 K = 0.0145% Params, 1.73 GMACs = 0.0388% MACs, 3.47 GFLOPS = 0.0366% FLOPs, 3, 1024, kernel_size=(14, 14), stride=(14, 14), bias=False)
+            (position_embedding): Embedding(590.85 K = 0.0142% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, 577, 1024)
+          )
+          (pre_layrnorm): LayerNorm(2.05 K = 0% Params, 0 MACs = 0% MACs, 14.77 MFLOPS = 0.0002% FLOPs, (1024,), eps=1e-05, elementwise_affine=True)
+          (encoder): CLIPEncoder(
+            302.31 M = 7.2905% Params, 953.06 GMACs = 21.3473% MACs, 1.91 TFLOPS = 20.1192% FLOPs
+            (layers): ModuleList(
+              (0-23): 24 x CLIPEncoderLayer(
+                12.6 M = 0.3038% Params, 39.71 GMACs = 0.8895% MACs, 79.51 GFLOPS = 0.8383% FLOPs
+                (self_attn): CLIPAttention(
+                  4.2 M = 0.1012% Params, 15.51 GMACs = 0.3474% MACs, 31.05 GFLOPS = 0.3274% FLOPs
+                  (k_proj): Linear(1.05 M = 0.0253% Params, 3.03 GMACs = 0.0678% MACs, 6.05 GFLOPS = 0.0638% FLOPs, in_features=1024, out_features=1024, bias=True)
+                  (v_proj): Linear(1.05 M = 0.0253% Params, 3.03 GMACs = 0.0678% MACs, 6.05 GFLOPS = 0.0638% FLOPs, in_features=1024, out_features=1024, bias=True)
+                  (q_proj): Linear(1.05 M = 0.0253% Params, 3.03 GMACs = 0.0678% MACs, 6.05 GFLOPS = 0.0638% FLOPs, in_features=1024, out_features=1024, bias=True)
+                  (out_proj): Linear(1.05 M = 0.0253% Params, 3.03 GMACs = 0.0678% MACs, 6.05 GFLOPS = 0.0638% FLOPs, in_features=1024, out_features=1024, bias=True)
+                )
+                (layer_norm1): LayerNorm(2.05 K = 0% Params, 0 MACs = 0% MACs, 14.77 MFLOPS = 0.0002% FLOPs, (1024,), eps=1e-05, elementwise_affine=True)
+                (mlp): CLIPMLP(
+                  8.39 M = 0.2024% Params, 24.2 GMACs = 0.5421% MACs, 48.43 GFLOPS = 0.5106% FLOPs
+                  (activation_fn): QuickGELUActivation(0 = 0% Params, 0 MACs = 0% MACs, 23.63 MFLOPS = 0.0002% FLOPs)
+                  (fc1): Linear(4.2 M = 0.1012% Params, 12.1 GMACs = 0.271% MACs, 24.2 GFLOPS = 0.2552% FLOPs, in_features=1024, out_features=4096, bias=True)
+                  (fc2): Linear(4.2 M = 0.1012% Params, 12.1 GMACs = 0.271% MACs, 24.2 GFLOPS = 0.2552% FLOPs, in_features=4096, out_features=1024, bias=True)
+                )
+                (layer_norm2): LayerNorm(2.05 K = 0% Params, 0 MACs = 0% MACs, 14.77 MFLOPS = 0.0002% FLOPs, (1024,), eps=1e-05, elementwise_affine=True)
+              )
+            )
+          )
+          (post_layernorm): LayerNorm(2.05 K = 0% Params, 0 MACs = 0% MACs, 25.6 KFLOPS = 0% FLOPs, (1024,), eps=1e-05, elementwise_affine=True)
+        )
+      )
+      (img_projection): Sequential(
+        22.03 M = 0.5312% Params, 16.67 GMACs = 0.3734% MACs, 33.34 GFLOPS = 0.3515% FLOPs
+        (0): Linear(12.59 M = 0.3035% Params, 9.53 GMACs = 0.2134% MACs, 19.05 GFLOPS = 0.2009% FLOPs, in_features=4096, out_features=3072, bias=True)
+        (1): GELU(0 = 0% Params, 0 MACs = 0% MACs, 2.33 MFLOPS = 0% FLOPs, approximate='none')
+        (2): Linear(9.44 M = 0.2277% Params, 7.14 GMACs = 0.16% MACs, 14.29 GFLOPS = 0.1506% FLOPs, in_features=3072, out_features=3072, bias=True)
+      )
+    )
+    (layers): ModuleList(
+      (0-31): 32 x Phi3DecoderLayer(
+        113.25 M = 2.7312% Params, 106.4 GMACs = 2.3832% MACs, 229.83 GFLOPS = 2.4232% FLOPs
+        (self_attn): Phi3Attention(
+          37.75 M = 0.9103% Params, 38.76 GMACs = 0.8681% MACs, 77.6 GFLOPS = 0.8182% FLOPs
+          (o_proj): Linear(9.44 M = 0.2276% Params, 8.46 GMACs = 0.1894% MACs, 16.91 GFLOPS = 0.1783% FLOPs, in_features=3072, out_features=3072, bias=False)
+          (qkv_proj): Linear(28.31 M = 0.6828% Params, 25.37 GMACs = 0.5682% MACs, 50.73 GFLOPS = 0.5349% FLOPs, in_features=3072, out_features=9216, bias=False)
+          (rotary_emb): Phi3SuScaledRotaryEmbedding(0 = 0% Params, 43.01 KMACs = 0% MACs, 258.19 KFLOPS = 0% FLOPs)
+        )
+        (mlp): Phi3MLP(
+          75.5 M = 1.8207% Params, 67.65 GMACs = 1.5152% MACs, 135.31 GFLOPS = 1.4266% FLOPs
+          (gate_up_proj): Linear(50.33 M = 1.2138% Params, 45.1 GMACs = 1.0101% MACs, 90.19 GFLOPS = 0.9509% FLOPs, in_features=3072, out_features=16384, bias=False)
+          (down_proj): Linear(25.17 M = 0.6069% Params, 22.55 GMACs = 0.5051% MACs, 45.1 GFLOPS = 0.4755% FLOPs, in_features=8192, out_features=3072, bias=False)
+          (activation_fn): SiLU(0 = 0% Params, 0 MACs = 0% MACs, 7.34 MFLOPS = 0.0001% FLOPs)
+        )
+        (input_layernorm): Phi3RMSNorm(3.07 K = 0.0001% Params, 0 MACs = 0% MACs, 8.46 GFLOPS = 0.0892% FLOPs)
+        (resid_attn_dropout): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+        (resid_mlp_dropout): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+        (post_attention_layernorm): Phi3RMSNorm(3.07 K = 0.0001% Params, 0 MACs = 0% MACs, 8.46 GFLOPS = 0.0892% FLOPs)
+      )
+    )
+    (norm): Phi3RMSNorm(3.07 K = 0.0001% Params, 0 MACs = 0% MACs, 8.46 GFLOPS = 0.0892% FLOPs)
+  )
+  (lm_head): Linear(98.5 M = 2.3754% Params, 88.26 GMACs = 1.9768% MACs, 176.51 GFLOPS = 1.861% FLOPs, in_features=3072, out_features=32064, bias=False)
+)
+---------------------------------------------------------------------------------------------------

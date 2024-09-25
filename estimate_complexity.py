@@ -7,6 +7,87 @@ from LlavaNext.calculate_flops import *
 import argparse
 import numpy as np
 
+def select_model(model_name="openbmb/MiniCPM-V",
+                 image_file="",
+                 query="",
+                 seq_len=128,
+                 max_new_tokens=1024,
+                 device="cuda",
+                 num_slices=None,
+                 print_file=""):
+    if image_file != "":
+        image = Image.open(image_file).convert('RGB')
+
+    else:
+        image = Image.new('RGB', (1920, 1080))
+
+    result = ""
+
+    if "openbmb" in model_name:
+        result = count_flops_minicpm(model_name=model_name,
+                                     image=image,
+                                     prompt=query,
+                                     device=device,
+                                     max_new_tokens=max_new_tokens,
+                                     num_slices=num_slices
+                                     )
+
+    elif "microsoft" in model_name:
+        result = count_flops_phi(model_name=model_name,
+                                 image=image,
+                                 prompt=query,
+                                 seq_len=seq_len,
+                                 device=device,
+                                 max_new_tokens=max_new_tokens,
+                                 num_slices=num_slices
+                                 )
+
+    elif "OpenGVLab" in model_name:
+        result = count_flops_internvl2(model_name=model_name,
+                                       image=image,
+                                       prompt=query,
+                                       seq_len=seq_len,
+                                       device=device,
+                                       max_new_tokens=max_new_tokens,
+                                       num_slices=num_slices
+                                       )
+
+    elif "Qwen" in model_name:
+       result = count_flops_qwen2(model_name=model_name,
+                                  image_name=image_file,
+                                  prompt=query,
+                                  device=device,
+                                  max_new_tokens=max_new_tokens
+                                  )
+
+    elif "llava-hf" in model_name:
+        result = count_flops_llavanext(model_name=model_name,
+                                       image=image,
+                                       prompt=query,
+                                       device=device,
+                                       max_new_tokens=max_new_tokens
+                                       )
+
+    '''
+    elif "VILA" in model_name:
+        count_flops_vila(model_name=model_name,
+                         image=image,
+                         prompt=query,
+                         device=device,
+                         max_new_tokens=max_new_tokens
+                         )
+    '''
+
+    if result != "":
+        if print_file != "":
+            f = open(print_file, "w")
+            f.write(result)
+            f.close()
+
+        else:
+            print(result)
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
 
@@ -19,63 +100,4 @@ if __name__ == '__main__':
     parser.add_argument("--num_slices", type=int, default=None)
     args = parser.parse_args()
 
-    if args.image_file != "":
-        image = Image.open(args.image_file).convert('RGB')
-
-    else:
-        image = Image.new('RGB', (1920, 1080))
-
-
-    if "openbmb" in args.model_name:
-        count_flops_minicpm(model_name = args.model_name,
-                            image = image,
-                            prompt = args.query,
-                            device = args.device,
-                            max_new_tokens = args.max_new_tokens,
-                            num_slices = args.num_slices
-                            )
-    
-    elif "microsoft" in args.model_name:
-        count_flops_phi(model_name=args.model_name,
-                        image=image,
-                        prompt=args.query,
-                        seq_len=args.seq_len,
-                        device=args.device,
-                        max_new_tokens=args.max_new_tokens,
-                        num_slices=args.num_slices
-                        )
-
-    elif "OpenGVLab" in args.model_name:
-        count_flops_internvl2(model_name=args.model_name,
-                              image=image,
-                              prompt=args.query,
-                              device=args.device,
-                              max_new_tokens=args.max_new_tokens,
-                              num_slices=args.num_slices
-                              )
-    
-    elif "Qwen" in args.model_name:
-        count_flops_qwen2(model_name=args.model_name,
-                          image_name=args.image_file,
-                          prompt=args.query,
-                          device=args.device,
-                          max_new_tokens=args.max_new_tokens
-                          )
-    
-    elif "llava-hf" in args.model_name:
-        count_flops_llavanext(model_name=args.model_name,
-                              image=image,
-                              prompt=args.query,
-                              device=args.device,
-                              max_new_tokens=args.max_new_tokens
-                              )
-
-    '''
-    elif "VILA" in args.model_name:
-        count_flops_vila(model_name=args.model_name,
-                         image=image,
-                         prompt=args.query,
-                         device=args.device,
-                         max_new_tokens=args.max_new_tokens
-                         )
-    '''
+    select_model(args.model_name, args.image_file, args.query, args.seq_len, args.max_new_tokens, args.device, args.num_slices)

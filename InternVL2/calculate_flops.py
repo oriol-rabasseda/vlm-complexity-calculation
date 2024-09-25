@@ -3,6 +3,7 @@ import importlib
 from calflops import calculate_flops
 import torch
 import pip
+from utils import *
 
 def manage_inports():
     import transformers
@@ -16,6 +17,7 @@ def manage_inports():
 def count_flops_internvl2(model_name,
                           image,
                           prompt,
+                          seq_len=128,
                           device = 'cuda',
                           max_new_tokens = 1024,
                           num_slices = None):
@@ -73,8 +75,12 @@ def count_flops_internvl2(model_name,
     generation_config['attention_mask'] = model_inputs['attention_mask'].to(device=device)
     generation_config['pixel_values'] = pixel_values
 
-    calculate_flops(model=model,
-                    forward_mode = 'generate',
-                    kwargs = generation_config,
-                    output_precision = 4,
-                    output_unit = 'T')
+    if prompt == "":
+        generation_config = get_raw_input(tokenizer, seq_len, generation_config, device)
+
+    _, _, _, result = calculate_flops(model=model,
+                                      forward_mode = 'generate',
+                                      kwargs = generation_config,
+                                      output_precision = 4,
+                                      output_unit = 'T')
+    return result
