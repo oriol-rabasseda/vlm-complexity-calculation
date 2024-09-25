@@ -347,7 +347,7 @@ class CalFlopsPipline(object):
                 "{} = {:g}% MACs".format(macs_to_string(macs),
                                          round(100 * macs / total_macs, precision) if total_macs else 0),
                 "{} = {:g}% FLOPs".format(flops_to_string(flops),
-                                          round(100 * macs / total_flops, precision) if total_flops else 0),
+                                          round(100 * flops / total_flops, precision) if total_flops else 0),
             ]
             original_extra_repr = module.original_extra_repr()
             if original_extra_repr:

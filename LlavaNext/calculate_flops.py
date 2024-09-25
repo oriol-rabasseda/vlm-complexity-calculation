@@ -17,8 +17,7 @@ def count_flops_llavanext(model_name,
                           image,
                           prompt,
                           device = 'cuda',
-                          max_new_tokens = 1024,
-                          num_slices = 4):
+                          max_new_tokens = 1024):
     conversation = [
         {
             "role": "user",

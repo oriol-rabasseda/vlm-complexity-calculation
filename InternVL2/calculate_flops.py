@@ -18,7 +18,7 @@ def count_flops_internvl2(model_name,
                           prompt,
                           device = 'cuda',
                           max_new_tokens = 1024,
-                          num_slices = 4):
+                          num_slices = None):
 
     installed = manage_inports()
     if not installed:
@@ -38,7 +38,10 @@ def count_flops_internvl2(model_name,
     tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True, use_fast=False)
 
     # set the max number of tiles in `max_num`
-    pixel_values = load_image(image, max_num=num_slices).to(device=device, dtype=torch.bfloat16)
+    if num_slices:
+        pixel_values = load_image(image, max_num=num_slices).to(device=device, dtype=torch.bfloat16)
+    else:
+        pixel_values = load_image(image).to(device=device, dtype=torch.bfloat16)
     generation_config = dict(max_new_tokens=max_new_tokens, do_sample=False)
 
     # single-image single-round conversation (单图单轮对话)

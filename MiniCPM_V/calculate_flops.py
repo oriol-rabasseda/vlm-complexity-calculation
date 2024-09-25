@@ -31,9 +31,10 @@ def get_inputs_minicpmv_2(image,
                           tokenizer,
                           prompt,
                           max_new_tokens = 1024,
-                          num_slices = 4):
+                          num_slices = None):
 
-    model.config.max_slice_nums = num_slices
+    if num_slices:
+        model.config.max_slice_nums = num_slices
 
     if model.config.slice_mode:
         images, final_placeholder = model.get_slice_image_placeholder(
@@ -80,16 +81,23 @@ def get_inputs_minicpmv_2_6(image,
                             tokenizer,
                             prompt,
                             max_new_tokens = 1024,
-                            num_slices = 4):
+                            num_slices = None):
 
     prompt_aux, images, processor = get_inputs_processor(image, model, prompt)
 
-    inputs = processor(
-        [prompt_aux],
-        [images],
-        max_slice_nums=num_slices,
-        return_tensors="pt"
-    ).to(model.device)
+    if num_slices:
+        inputs = processor(
+            [prompt_aux],
+            [images],
+            max_slice_nums=num_slices,
+            return_tensors="pt"
+        ).to(model.device)
+    else:
+        inputs = processor(
+            [prompt_aux],
+            [images],
+            return_tensors="pt"
+        ).to(model.device)
 
     inputs["tokenizer"] = tokenizer
     inputs["max_new_tokens"] = max_new_tokens
@@ -104,9 +112,10 @@ def get_inputs_minicpmv_2_5_llama3(image,
                                    tokenizer,
                                    prompt,
                                    max_new_tokens = 1024,
-                                   num_slices = 4):
+                                   num_slices = None):
 
-    model.config.slice_config.max_slice_nums = num_slices
+    if num_slices:
+        model.config.slice_config.max_slice_nums = num_slices
 
     prompt_aux, images, processor = get_inputs_processor(image, model, prompt)
 
@@ -132,7 +141,7 @@ def count_flops_minicpm(model_name,
                         prompt,
                         device = 'cuda',
                         max_new_tokens = 1024,
-                        num_slices = 4):
+                        num_slices = None):
 
     installed = manage_inports()
     if not installed:

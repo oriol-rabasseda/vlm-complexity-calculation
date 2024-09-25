@@ -68,6 +68,10 @@ def _gelu_flops_compute(input, **kwargs):
     return input.numel(), 0
 
 
+def _sigmoid_flops_compute(input, **kwargs):
+    return input.numel(), 0
+
+
 def _pool_flops_compute(input,
                         kernel_size,
                         stride=None,
@@ -321,8 +325,24 @@ def _mul_flops_compute(input, other, *, out=None):
     return _elementwise_flops_compute(input, other)
 
 
+def _div_flops_compute(input, other, *, out=None):
+    return _elementwise_flops_compute(input, other)
+
+
 def _add_flops_compute(input, other, *, alpha=1, out=None):
     return _elementwise_flops_compute(input, other)
+
+
+def _sub_flops_compute(input, other, *, alpha=1, out=None):
+    return _elementwise_flops_compute(input, other)
+
+
+def _pow_flops_compute(input, other, *, out=None):
+    return _elementwise_flops_compute(input, other)
+
+
+def _mean_flops_compute(input, dim, keepdim=False, *, dtype=None, out=None):
+    return input.numel(), 0
 
 
 def _elementwise_flops_compute(input, other):
@@ -506,23 +526,44 @@ def _patch_functionals(old_functions, module_flop_count, module_mac_count):
 def _patch_tensor_methods(old_functions, module_flop_count, module_mac_count):
     torch.matmul = wrapFunc(torch.matmul, _matmul_flops_compute, old_functions, module_flop_count, module_mac_count)
     torch.Tensor.matmul = wrapFunc(torch.Tensor.matmul, _matmul_flops_compute, old_functions, module_flop_count, module_mac_count)
-    # torch.mm = wrapFunc(torch.mm, _matmul_flops_compute, old_functions, module_flop_count, module_mac_count)
-    # torch.Tensor.mm = wrapFunc(torch.Tensor.mm, _matmul_flops_compute, old_functions, module_flop_count, module_mac_count)
-    # torch.bmm = wrapFunc(torch.bmm, _matmul_flops_compute, old_functions, module_flop_count, module_mac_count)
-    # torch.Tensor.bmm = wrapFunc(torch.Tensor.bmm, _matmul_flops_compute, old_functions, module_flop_count, module_mac_count)
+    torch.Tensor.__matmul__ = wrapFunc(torch.Tensor.__matmul__, _matmul_flops_compute, old_functions, module_flop_count, module_mac_count)
+
+    torch.mm = wrapFunc(torch.mm, _matmul_flops_compute, old_functions, module_flop_count, module_mac_count)
+    torch.Tensor.mm = wrapFunc(torch.Tensor.mm, _matmul_flops_compute, old_functions, module_flop_count, module_mac_count)
+    torch.bmm = wrapFunc(torch.bmm, _matmul_flops_compute, old_functions, module_flop_count, module_mac_count)
+    torch.Tensor.bmm = wrapFunc(torch.Tensor.bmm, _matmul_flops_compute, old_functions, module_flop_count, module_mac_count)
 
     torch.addmm = wrapFunc(torch.addmm, _addmm_flops_compute, old_functions, module_flop_count, module_mac_count)
     torch.Tensor.addmm = wrapFunc(torch.Tensor.addmm, _tensor_addmm_flops_compute, old_functions, module_flop_count, module_mac_count)
 
     torch.mul = wrapFunc(torch.mul, _mul_flops_compute, old_functions, module_flop_count, module_mac_count)
     torch.Tensor.mul = wrapFunc(torch.Tensor.mul, _mul_flops_compute, old_functions, module_flop_count, module_mac_count)
+    #torch.Tensor.pow = wrapFunc(torch.Tensor.pow, _pow_flops_compute, old_functions, module_flop_count, module_mac_count)
+
+    torch.Tensor.__mul__ = wrapFunc(torch.Tensor.__mul__, _mul_flops_compute, old_functions, module_flop_count, module_mac_count)
+    torch.Tensor.__truediv__ = wrapFunc(torch.Tensor.__truediv__, _div_flops_compute, old_functions, module_flop_count, module_mac_count)
+    #torch.Tensor.__pow__ = wrapFunc(torch.Tensor.__pow__, _pow_flops_compute, old_functions, module_flop_count, module_mac_count)
+
+    torch.Tensor.__imul__ = wrapFunc(torch.Tensor.__imul__, _mul_flops_compute, old_functions, module_flop_count, module_mac_count)
+    torch.Tensor.__itruediv__ = wrapFunc(torch.Tensor.__itruediv__, _div_flops_compute, old_functions, module_flop_count, module_mac_count)
+    #torch.Tensor.__ipow__ = wrapFunc(torch.Tensor.__ipow__, _pow_flops_compute, old_functions, module_flop_count, module_mac_count)
 
     torch.add = wrapFunc(torch.add, _add_flops_compute, old_functions, module_flop_count, module_mac_count)
     torch.Tensor.add = wrapFunc(torch.Tensor.add, _add_flops_compute, old_functions, module_flop_count, module_mac_count)
 
+    torch.Tensor.__add__ = wrapFunc(torch.Tensor.__add__, _add_flops_compute, old_functions, module_flop_count, module_mac_count)
+    torch.Tensor.__sub__ = wrapFunc(torch.Tensor.__sub__, _sub_flops_compute, old_functions, module_flop_count, module_mac_count)
+    torch.Tensor.__iadd__ = wrapFunc(torch.Tensor.__iadd__, _add_flops_compute, old_functions, module_flop_count, module_mac_count)
+    torch.Tensor.__isub__ = wrapFunc(torch.Tensor.__isub__, _sub_flops_compute, old_functions, module_flop_count, module_mac_count)
+
+    #torch.Tensor.sum = wrapFunc(torch.Tensor.sum, _mean_flops_compute, old_functions, module_flop_count, module_mac_count)
+    #torch.Tensor.mean = wrapFunc(torch.Tensor.mean, _mean_flops_compute, old_functions, module_flop_count, module_mac_count)
+
     torch.einsum = wrapFunc(torch.einsum, _einsum_flops_compute, old_functions, module_flop_count, module_mac_count)
 
     torch.baddbmm = wrapFunc(torch.baddbmm, _tensor_addmm_flops_compute, old_functions, module_flop_count, module_mac_count)
+
+    torch.sigmoid = wrapFunc(torch.sigmoid, _softmax_flops_compute, old_functions, module_flop_count, module_mac_count)
 
 
 def _reload_functionals(old_functions):
@@ -567,15 +608,30 @@ def _reload_functionals(old_functions):
 def _reload_tensor_methods(old_functions):
     torch.matmul = old_functions[torch.matmul.__str__]
     torch.Tensor.matmul = old_functions[torch.Tensor.matmul.__str__]
-    # torch.mm = old_functions[torch.mm.__str__]
-    # torch.Tensor.mm = old_functions[torch.Tensor.mm.__str__]
-    # torch.bmm = old_functions[torch.matmul.__str__]
-    # torch.Tensor.bmm = old_functions[torch.Tensor.bmm.__str__]
+    torch.Tensor.__matmul__ = old_functions[torch.Tensor.__matmul__.__str__]
+    torch.mm = old_functions[torch.mm.__str__]
+    torch.Tensor.mm = old_functions[torch.Tensor.mm.__str__]
+    torch.bmm = old_functions[torch.bmm.__str__]
+    torch.Tensor.bmm = old_functions[torch.Tensor.bmm.__str__]
     torch.addmm = old_functions[torch.addmm.__str__]
     torch.Tensor.addmm = old_functions[torch.Tensor.addmm.__str__]
     torch.mul = old_functions[torch.mul.__str__]
     torch.Tensor.mul = old_functions[torch.Tensor.mul.__str__]
     torch.add = old_functions[torch.add.__str__]
     torch.Tensor.add = old_functions[torch.Tensor.add.__str__]
+    torch.Tensor.__add__ = old_functions[torch.Tensor.__add__.__str__]
+    torch.Tensor.__sub__ = old_functions[torch.Tensor.__sub__.__str__]
+    torch.Tensor.__mul__ = old_functions[torch.Tensor.__mul__.__str__]
+    torch.Tensor.__truediv__ = old_functions[torch.Tensor.__truediv__.__str__]
+    #torch.Tensor.__pow__ = old_functions[torch.Tensor.__pow__.__str__]
+    torch.Tensor.__iadd__ = old_functions[torch.Tensor.__iadd__.__str__]
+    torch.Tensor.__isub__ = old_functions[torch.Tensor.__isub__.__str__]
+    torch.Tensor.__imul__ = old_functions[torch.Tensor.__imul__.__str__]
+    torch.Tensor.__itruediv__ = old_functions[torch.Tensor.__itruediv__.__str__]
+    #torch.Tensor.__ipow__ = old_functions[torch.Tensor.__ipow__.__str__]
     torch.einsum = old_functions[torch.einsum.__str__]
     torch.baddbmm = old_functions[torch.baddbmm.__str__]
+    torch.sigmoid = old_functions[torch.sigmoid.__str__]
+    #torch.Tensor.pow = old_functions[torch.Tensor.pow.__str__]
+    #torch.Tensor.sum = old_functions[torch.Tensor.sum.__str__]
+    #torch.Tensor.mean = old_functions[torch.Tensor.mean.__str__]

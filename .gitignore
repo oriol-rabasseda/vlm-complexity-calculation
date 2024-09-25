@@ -5,3 +5,5 @@ InternVL2/__pycache__
 VILA/__pycache__
 Qwen2/__pycache__
 LlavaNext/__pycache__
+.idea
+__pycache__
