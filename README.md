@@ -44,6 +44,8 @@ The set of models supported and tested is the following, future methods will als
 | LLaVa-OneVision | llava-hf/llava-onevision-qwen2-0.5b-si-hf | [🤗](https://huggingface.co/llava-hf/llava-onevision-qwen2-0.5b-si-hf) | git+https://github.com/huggingface/transformers@e40bb4845e0eefb52ec1e9cac9c2446ab36aef81 |
 | LLaVa-OneVision | llava-hf/llava-onevision-qwen2-7b-ov-hf   | [🤗](https://huggingface.co/llava-hf/llava-onevision-qwen2-7b-ov-hf)   | git+https://github.com/huggingface/transformers@e40bb4845e0eefb52ec1e9cac9c2446ab36aef81 |
 | LLaVa-OneVision | llava-hf/llava-onevision-qwen2-7b-si-hf   | [🤗](https://huggingface.co/llava-hf/llava-onevision-qwen2-7b-si-hf)   | git+https://github.com/huggingface/transformers@e40bb4845e0eefb52ec1e9cac9c2446ab36aef81 |
+| VILA            | Efficient-Large-Model/VILA1.5-3b          | [🤗](https://huggingface.co/Efficient-Large-Model/VILA1.5-3b)          | 4.40.2               |
+| VILA            | Efficient-Large-Model/Llama-3-VILA1.5-8B  | [🤗](https://huggingface.co/Efficient-Large-Model/Llama-3-VILA1.5-8B)  | 4.40.2               |
 
 ## Execution
 To run the tool, please run the following command:
