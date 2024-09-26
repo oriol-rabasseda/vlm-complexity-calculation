@@ -1,11 +1,6 @@
-from MiniCPM_V.calculate_flops import *
-from Phi_Vision.calculate_flops import *
-from InternVL2.calculate_flops import *
-from Qwen2.calculate_flops import *
-from LlavaNext.calculate_flops import *
-#from VILA.calculate_flops import *
 import argparse
 import numpy as np
+from PIL import Image
 
 def select_model(model_name="openbmb/MiniCPM-V",
                  image_file="",
@@ -24,6 +19,7 @@ def select_model(model_name="openbmb/MiniCPM-V",
     result = ""
 
     if "openbmb" in model_name:
+        from MiniCPM_V.calculate_flops import count_flops_minicpm
         result = count_flops_minicpm(model_name=model_name,
                                      image=image,
                                      prompt=query,
@@ -34,6 +30,7 @@ def select_model(model_name="openbmb/MiniCPM-V",
                                      )
 
     elif "microsoft" in model_name:
+        from Phi_Vision.calculate_flops import count_flops_phi
         result = count_flops_phi(model_name=model_name,
                                  image=image,
                                  prompt=query,
@@ -44,6 +41,7 @@ def select_model(model_name="openbmb/MiniCPM-V",
                                  )
 
     elif "OpenGVLab" in model_name:
+        from InternVL2.calculate_flops import count_flops_internvl2
         result = count_flops_internvl2(model_name=model_name,
                                        image=image,
                                        prompt=query,
@@ -54,7 +52,8 @@ def select_model(model_name="openbmb/MiniCPM-V",
                                        )
 
     elif "Qwen" in model_name:
-       result = count_flops_qwen2(model_name=model_name,
+        from Qwen2.calculate_flops import count_flops_qwen2
+        result = count_flops_qwen2(model_name=model_name,
                                   image=image,
                                   prompt=query,
                                   seq_len=seq_len,
@@ -63,6 +62,7 @@ def select_model(model_name="openbmb/MiniCPM-V",
                                   )
 
     elif "llava-hf" in model_name:
+        from LlavaNext.calculate_flops import count_flops_llavanext
         result = count_flops_llavanext(model_name=model_name,
                                        image=image,
                                        prompt=query,
@@ -71,15 +71,14 @@ def select_model(model_name="openbmb/MiniCPM-V",
                                        max_new_tokens=max_new_tokens
                                        )
 
-    '''
     elif "VILA" in model_name:
-        count_flops_vila(model_name=model_name,
-                         image=image,
-                         prompt=query,
-                         device=device,
-                         max_new_tokens=max_new_tokens
-                         )
-    '''
+        from VILA.calculate_flops import count_flops_vila
+        result = count_flops_vila(model_name=model_name,
+                                  image=image,
+                                  prompt=query,
+                                  device=device,
+                                  max_new_tokens=max_new_tokens
+                                  )
 
     if result != "" and result:
         if print_file != "":

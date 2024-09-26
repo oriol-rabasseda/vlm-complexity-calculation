@@ -1,16 +1,8 @@
-import pip
 from qwen_vl_utils import process_vision_info
 from calflops import calculate_flops
 import torch
 from utils import *
-
-def manage_inports():
-    import transformers
-    if transformers.__version__ == '4.45.0.dev0':
-        return True
-    else:
-        pip.main(['install', 'git+https://github.com/huggingface/transformers@21fac7abba2a37fae86106f87fcf9974fd1e3830'])
-        return False
+from transformers import Qwen2VLForConditionalGeneration, AutoTokenizer, AutoProcessor
 
 def count_flops_qwen2(model_name,
                     image,
@@ -18,12 +10,6 @@ def count_flops_qwen2(model_name,
                     seq_len=128,
                     device = 'cuda',
                     max_new_tokens = 1):
-    installed = manage_inports()
-    if not installed:
-        print('Transformers package version has been changed, please re-run the command')
-        return
-
-    from transformers import Qwen2VLForConditionalGeneration, AutoTokenizer, AutoProcessor
 
     model = Qwen2VLForConditionalGeneration.from_pretrained(
         model_name, torch_dtype="auto", device_map=device

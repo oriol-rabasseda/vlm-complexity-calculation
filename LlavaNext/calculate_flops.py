@@ -1,18 +1,7 @@
-import pip
 import torch
 from PIL import Image
 from calflops import calculate_flops
-from packaging.version import Version
 from utils import *
-
-def manage_imports():
-    import transformers
-    if Version(transformers.__version__) > Version('4.44'):
-        return True
-    else:
-        pip.main(['install', 'git+https://github.com/huggingface/transformers@e40bb4845e0eefb52ec1e9cac9c2446ab36aef81'])
-        return False
-
 
 def count_flops_llavanext(model_name,
                           image,
@@ -31,11 +20,6 @@ def count_flops_llavanext(model_name,
     ]
 
     if "onevision" in model_name:
-        installed = manage_imports()
-        if not installed:
-            print('Transformers package version has been changed, please re-run the command')
-            return
-
         from transformers import LlavaOnevisionForConditionalGeneration, AutoProcessor
 
         processor = AutoProcessor.from_pretrained(model_name)
