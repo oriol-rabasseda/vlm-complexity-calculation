@@ -19,7 +19,7 @@ def count_flops_internvl2(model_name,
                           prompt,
                           seq_len=128,
                           device = 'cuda',
-                          max_new_tokens = 1024,
+                          max_new_tokens = 1,
                           num_slices = None):
 
     installed = manage_inports()

@@ -11,7 +11,7 @@ def select_model(model_name="openbmb/MiniCPM-V",
                  image_file="",
                  query="",
                  seq_len=128,
-                 max_new_tokens=1024,
+                 max_new_tokens=1,
                  device="cuda",
                  num_slices=None,
                  print_file=""):
@@ -27,6 +27,7 @@ def select_model(model_name="openbmb/MiniCPM-V",
         result = count_flops_minicpm(model_name=model_name,
                                      image=image,
                                      prompt=query,
+                                     seq_len=seq_len,
                                      device=device,
                                      max_new_tokens=max_new_tokens,
                                      num_slices=num_slices
@@ -54,8 +55,9 @@ def select_model(model_name="openbmb/MiniCPM-V",
 
     elif "Qwen" in model_name:
        result = count_flops_qwen2(model_name=model_name,
-                                  image_name=image_file,
+                                  image=image,
                                   prompt=query,
+                                  seq_len=seq_len,
                                   device=device,
                                   max_new_tokens=max_new_tokens
                                   )
@@ -64,6 +66,7 @@ def select_model(model_name="openbmb/MiniCPM-V",
         result = count_flops_llavanext(model_name=model_name,
                                        image=image,
                                        prompt=query,
+                                       seq_len=seq_len,
                                        device=device,
                                        max_new_tokens=max_new_tokens
                                        )
@@ -98,6 +101,7 @@ if __name__ == '__main__':
     parser.add_argument("--max_new_tokens", type=int, default=1024)
     parser.add_argument("--device", type=str, default="cuda")
     parser.add_argument("--num_slices", type=int, default=None)
+    parser.add_argument("--output-file", type=str, default="")
     args = parser.parse_args()
 
-    select_model(args.model_name, args.image_file, args.query, args.seq_len, args.max_new_tokens, args.device, args.num_slices)
+    select_model(args.model_name, args.image_file, args.query, args.seq_len, args.max_new_tokens, args.device, args.num_slices, args.output_file)

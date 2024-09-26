@@ -2,6 +2,7 @@ import pip
 from qwen_vl_utils import process_vision_info
 from calflops import calculate_flops
 import torch
+from utils import *
 
 def manage_inports():
     import transformers
@@ -12,10 +13,11 @@ def manage_inports():
         return False
 
 def count_flops_qwen2(model_name,
-                    image_name,
+                    image,
                     prompt,
+                    seq_len=128,
                     device = 'cuda',
-                    max_new_tokens = 1024):
+                    max_new_tokens = 1):
     installed = manage_inports()
     if not installed:
         print('Transformers package version has been changed, please re-run the command')
@@ -36,7 +38,7 @@ def count_flops_qwen2(model_name,
             "content": [
                 {
                     "type": "image",
-                    "image": image_name,
+                    "image": image,
                 },
                 {"type": "text", "text": prompt},
             ],
@@ -58,8 +60,13 @@ def count_flops_qwen2(model_name,
     inputs = inputs
     inputs['max_new_tokens'] = max_new_tokens
 
-    calculate_flops(model=model,
-                    forward_mode = 'generate',
-                    kwargs = inputs,
-                    output_precision = 4,
-                    output_unit = 'T')
+    if prompt == "":
+        inputs = get_raw_input(processor.tokenizer, seq_len, inputs, device)
+
+    _, _, _, result = calculate_flops(model=model,
+                                      forward_mode='generate',
+                                      kwargs=inputs,
+                                      output_precision=4,
+                                      output_unit='T')
+
+    return result
