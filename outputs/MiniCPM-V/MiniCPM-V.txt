@@ -1,0 +1,789 @@
+
+------------------------------------- Calculate Flops Results -------------------------------------
+Notations:
+number of parameters (Params), number of multiply-accumulate operations(MACs),
+number of floating-point operations (FLOPs), floating-point operations per second (FLOPS),
+fwd FLOPs (model forward propagation FLOPs), bwd FLOPs (model backward propagation FLOPs),
+default model backpropagation takes 2.00 times as much computation as forward propagation.
+
+Total Training Params:                                                  3.43 B  
+fwd MACs:                                                               0.6253 TMACs
+fwd FLOPs:                                                              1.2835 TFLOPS
+fwd+bwd MACs:                                                           1.8759 TMACs
+fwd+bwd FLOPs:                                                          3.8504 TFLOPS
+
+-------------------------------- Detailed Calculated FLOPs Results --------------------------------
+Each module caculated is listed after its name in the following order: 
+params, percentage of total params, MACs, percentage of total MACs, FLOPS, percentage of total FLOPs
+
+Note: 1. A module can have torch.nn.module or torch.nn.functional to compute logits (e.g. CrossEntropyLoss). 
+ They are not counted as submodules in calflops and not to be printed out. However they make up the difference between a parent's MACs and the sum of its submodules'.
+2. Number of floating-point operations is a theoretical estimation, thus FLOPS computed using that could be larger than the maximum system throughput.
+
+MiniCPMV(
+  3.43 B = 100% Params, 625.3 GMACs = 100% MACs, 1.28 TFLOPS = 100% FLOPs
+  (llm): MiniCPMForCausalLM(
+    3.01 B = 87.5651% Params, 204.35 GMACs = 32.6805% MACs, 441.07 GFLOPS = 34.3653% FLOPs
+    (model): MiniCPMModel(
+      2.72 B = 79.3312% Params, 183.14 GMACs = 29.2883% MACs, 398.65 GFLOPS = 31.0599% FLOPs
+      (embed_tokens): Embedding(282.82 M = 8.234% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, 122753, 2304)
+      (layers): ModuleList(
+        (0-39): 40 x MiniCPMDecoderLayer(
+          61.05 M = 1.7774% Params, 4.58 GMACs = 0.7322% MACs, 9.96 GFLOPS = 0.7757% FLOPs
+          (self_attn): MiniCPMSdpaAttention(
+            21.23 M = 0.6182% Params, 1.59 GMACs = 0.2547% MACs, 3.19 GFLOPS = 0.2482% FLOPs
+            (q_proj): Linear(5.31 M = 0.1545% Params, 398.13 MMACs = 0.0637% MACs, 796.26 MFLOPS = 0.062% FLOPs, in_features=2304, out_features=2304, bias=False)
+            (k_proj): Linear(5.31 M = 0.1545% Params, 398.13 MMACs = 0.0637% MACs, 796.26 MFLOPS = 0.062% FLOPs, in_features=2304, out_features=2304, bias=False)
+            (v_proj): Linear(5.31 M = 0.1545% Params, 398.13 MMACs = 0.0637% MACs, 796.26 MFLOPS = 0.062% FLOPs, in_features=2304, out_features=2304, bias=False)
+            (o_proj): Linear(5.31 M = 0.1545% Params, 398.13 MMACs = 0.0637% MACs, 796.26 MFLOPS = 0.062% FLOPs, in_features=2304, out_features=2304, bias=False)
+            (rotary_emb): MiniCPMRotaryEmbedding(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          )
+          (mlp): MiniCPMMLP(
+            39.81 M = 1.1591% Params, 2.99 GMACs = 0.4775% MACs, 5.97 GFLOPS = 0.4654% FLOPs
+            (gate_proj): Linear(13.27 M = 0.3864% Params, 995.33 MMACs = 0.1592% MACs, 1.99 GFLOPS = 0.1551% FLOPs, in_features=2304, out_features=5760, bias=False)
+            (up_proj): Linear(13.27 M = 0.3864% Params, 995.33 MMACs = 0.1592% MACs, 1.99 GFLOPS = 0.1551% FLOPs, in_features=2304, out_features=5760, bias=False)
+            (down_proj): Linear(13.27 M = 0.3864% Params, 995.33 MMACs = 0.1592% MACs, 1.99 GFLOPS = 0.1551% FLOPs, in_features=5760, out_features=2304, bias=False)
+            (act_fn): SiLU(0 = 0% Params, 0 MACs = 0% MACs, 432 KFLOPS = 0% FLOPs)
+          )
+          (input_layernorm): MiniCPMRMSNorm(2.3 K = 0.0001% Params, 0 MACs = 0% MACs, 398.3 MFLOPS = 0.031% FLOPs)
+          (post_attention_layernorm): MiniCPMRMSNorm(2.3 K = 0.0001% Params, 0 MACs = 0% MACs, 398.3 MFLOPS = 0.031% FLOPs)
+        )
+      )
+      (norm): MiniCPMRMSNorm(2.3 K = 0.0001% Params, 0 MACs = 0% MACs, 398.3 MFLOPS = 0.031% FLOPs)
+    )
+    (lm_head): Linear(282.82 M = 8.234% Params, 21.21 GMACs = 3.3922% MACs, 42.42 GFLOPS = 3.3053% FLOPs, in_features=2304, out_features=122753, bias=False)
+  )
+  (vpm): VisionTransformer(
+    397.75 M = 11.5799% Params, 406.04 GMACs = 64.9349% MACs, 812.57 GFLOPS = 63.3099% FLOPs
+    (patch_embed): PatchEmbed(
+      678.53 K = 0.0198% Params, 693.63 MMACs = 0.1109% MACs, 1.39 GFLOPS = 0.1082% FLOPs
+      (proj): Conv2d(678.53 K = 0.0198% Params, 693.63 MMACs = 0.1109% MACs, 1.39 GFLOPS = 0.1082% FLOPs, 3, 1152, kernel_size=(14, 14), stride=(14, 14))
+      (norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+    )
+    (pos_drop): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+    (patch_drop): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+    (norm_pre): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+    (blocks): Sequential(
+      396.23 M = 11.5356% Params, 405.35 GMACs = 64.824% MACs, 811.17 GFLOPS = 63.2013% FLOPs
+      (0): Block(
+        15.24 M = 0.4437% Params, 15.59 GMACs = 2.4932% MACs, 31.2 GFLOPS = 2.4308% FLOPs
+        (norm1): LayerNorm(2.3 K = 0.0001% Params, 0 MACs = 0% MACs, 5.9 MFLOPS = 0.0005% FLOPs, (1152,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          5.31 M = 0.1547% Params, 5.44 GMACs = 0.8693% MACs, 10.87 GFLOPS = 0.847% FLOPs
+          (qkv): Linear(3.98 M = 0.116% Params, 4.08 GMACs = 0.652% MACs, 8.15 GFLOPS = 0.6353% FLOPs, in_features=1152, out_features=3456, bias=True)
+          (q_norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (k_norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (attn_drop): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+          (proj): Linear(1.33 M = 0.0387% Params, 1.36 GMACs = 0.2173% MACs, 2.72 GFLOPS = 0.2118% FLOPs, in_features=1152, out_features=1152, bias=True)
+          (proj_drop): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+        )
+        (ls1): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (drop_path1): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (norm2): LayerNorm(2.3 K = 0.0001% Params, 0 MACs = 0% MACs, 5.9 MFLOPS = 0.0005% FLOPs, (1152,), eps=1e-06, elementwise_affine=True)
+        (mlp): Mlp(
+          9.92 M = 0.2889% Params, 10.15 GMACs = 1.6239% MACs, 20.31 GFLOPS = 1.5827% FLOPs
+          (fc1): Linear(4.96 M = 0.1445% Params, 5.08 GMACs = 0.812% MACs, 10.15 GFLOPS = 0.7912% FLOPs, in_features=1152, out_features=4304, bias=True)
+          (act): GELU(0 = 0% Params, 0 MACs = 0% MACs, 4.41 MFLOPS = 0.0003% FLOPs, approximate='none')
+          (drop1): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+          (norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (fc2): Linear(4.96 M = 0.1444% Params, 5.08 GMACs = 0.812% MACs, 10.15 GFLOPS = 0.7912% FLOPs, in_features=4304, out_features=1152, bias=True)
+          (drop2): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+        )
+        (ls2): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (drop_path2): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+      )
+      (1): Block(
+        15.24 M = 0.4437% Params, 15.59 GMACs = 2.4932% MACs, 31.2 GFLOPS = 2.4308% FLOPs
+        (norm1): LayerNorm(2.3 K = 0.0001% Params, 0 MACs = 0% MACs, 5.9 MFLOPS = 0.0005% FLOPs, (1152,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          5.31 M = 0.1547% Params, 5.44 GMACs = 0.8693% MACs, 10.87 GFLOPS = 0.847% FLOPs
+          (qkv): Linear(3.98 M = 0.116% Params, 4.08 GMACs = 0.652% MACs, 8.15 GFLOPS = 0.6353% FLOPs, in_features=1152, out_features=3456, bias=True)
+          (q_norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (k_norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (attn_drop): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+          (proj): Linear(1.33 M = 0.0387% Params, 1.36 GMACs = 0.2173% MACs, 2.72 GFLOPS = 0.2118% FLOPs, in_features=1152, out_features=1152, bias=True)
+          (proj_drop): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+        )
+        (ls1): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (drop_path1): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (norm2): LayerNorm(2.3 K = 0.0001% Params, 0 MACs = 0% MACs, 5.9 MFLOPS = 0.0005% FLOPs, (1152,), eps=1e-06, elementwise_affine=True)
+        (mlp): Mlp(
+          9.92 M = 0.2889% Params, 10.15 GMACs = 1.6239% MACs, 20.31 GFLOPS = 1.5827% FLOPs
+          (fc1): Linear(4.96 M = 0.1445% Params, 5.08 GMACs = 0.812% MACs, 10.15 GFLOPS = 0.7912% FLOPs, in_features=1152, out_features=4304, bias=True)
+          (act): GELU(0 = 0% Params, 0 MACs = 0% MACs, 4.41 MFLOPS = 0.0003% FLOPs, approximate='none')
+          (drop1): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+          (norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (fc2): Linear(4.96 M = 0.1444% Params, 5.08 GMACs = 0.812% MACs, 10.15 GFLOPS = 0.7912% FLOPs, in_features=4304, out_features=1152, bias=True)
+          (drop2): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+        )
+        (ls2): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (drop_path2): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+      )
+      (2): Block(
+        15.24 M = 0.4437% Params, 15.59 GMACs = 2.4932% MACs, 31.2 GFLOPS = 2.4308% FLOPs
+        (norm1): LayerNorm(2.3 K = 0.0001% Params, 0 MACs = 0% MACs, 5.9 MFLOPS = 0.0005% FLOPs, (1152,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          5.31 M = 0.1547% Params, 5.44 GMACs = 0.8693% MACs, 10.87 GFLOPS = 0.847% FLOPs
+          (qkv): Linear(3.98 M = 0.116% Params, 4.08 GMACs = 0.652% MACs, 8.15 GFLOPS = 0.6353% FLOPs, in_features=1152, out_features=3456, bias=True)
+          (q_norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (k_norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (attn_drop): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+          (proj): Linear(1.33 M = 0.0387% Params, 1.36 GMACs = 0.2173% MACs, 2.72 GFLOPS = 0.2118% FLOPs, in_features=1152, out_features=1152, bias=True)
+          (proj_drop): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+        )
+        (ls1): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (drop_path1): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (norm2): LayerNorm(2.3 K = 0.0001% Params, 0 MACs = 0% MACs, 5.9 MFLOPS = 0.0005% FLOPs, (1152,), eps=1e-06, elementwise_affine=True)
+        (mlp): Mlp(
+          9.92 M = 0.2889% Params, 10.15 GMACs = 1.6239% MACs, 20.31 GFLOPS = 1.5827% FLOPs
+          (fc1): Linear(4.96 M = 0.1445% Params, 5.08 GMACs = 0.812% MACs, 10.15 GFLOPS = 0.7912% FLOPs, in_features=1152, out_features=4304, bias=True)
+          (act): GELU(0 = 0% Params, 0 MACs = 0% MACs, 4.41 MFLOPS = 0.0003% FLOPs, approximate='none')
+          (drop1): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+          (norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (fc2): Linear(4.96 M = 0.1444% Params, 5.08 GMACs = 0.812% MACs, 10.15 GFLOPS = 0.7912% FLOPs, in_features=4304, out_features=1152, bias=True)
+          (drop2): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+        )
+        (ls2): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (drop_path2): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+      )
+      (3): Block(
+        15.24 M = 0.4437% Params, 15.59 GMACs = 2.4932% MACs, 31.2 GFLOPS = 2.4308% FLOPs
+        (norm1): LayerNorm(2.3 K = 0.0001% Params, 0 MACs = 0% MACs, 5.9 MFLOPS = 0.0005% FLOPs, (1152,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          5.31 M = 0.1547% Params, 5.44 GMACs = 0.8693% MACs, 10.87 GFLOPS = 0.847% FLOPs
+          (qkv): Linear(3.98 M = 0.116% Params, 4.08 GMACs = 0.652% MACs, 8.15 GFLOPS = 0.6353% FLOPs, in_features=1152, out_features=3456, bias=True)
+          (q_norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (k_norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (attn_drop): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+          (proj): Linear(1.33 M = 0.0387% Params, 1.36 GMACs = 0.2173% MACs, 2.72 GFLOPS = 0.2118% FLOPs, in_features=1152, out_features=1152, bias=True)
+          (proj_drop): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+        )
+        (ls1): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (drop_path1): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (norm2): LayerNorm(2.3 K = 0.0001% Params, 0 MACs = 0% MACs, 5.9 MFLOPS = 0.0005% FLOPs, (1152,), eps=1e-06, elementwise_affine=True)
+        (mlp): Mlp(
+          9.92 M = 0.2889% Params, 10.15 GMACs = 1.6239% MACs, 20.31 GFLOPS = 1.5827% FLOPs
+          (fc1): Linear(4.96 M = 0.1445% Params, 5.08 GMACs = 0.812% MACs, 10.15 GFLOPS = 0.7912% FLOPs, in_features=1152, out_features=4304, bias=True)
+          (act): GELU(0 = 0% Params, 0 MACs = 0% MACs, 4.41 MFLOPS = 0.0003% FLOPs, approximate='none')
+          (drop1): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+          (norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (fc2): Linear(4.96 M = 0.1444% Params, 5.08 GMACs = 0.812% MACs, 10.15 GFLOPS = 0.7912% FLOPs, in_features=4304, out_features=1152, bias=True)
+          (drop2): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+        )
+        (ls2): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (drop_path2): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+      )
+      (4): Block(
+        15.24 M = 0.4437% Params, 15.59 GMACs = 2.4932% MACs, 31.2 GFLOPS = 2.4308% FLOPs
+        (norm1): LayerNorm(2.3 K = 0.0001% Params, 0 MACs = 0% MACs, 5.9 MFLOPS = 0.0005% FLOPs, (1152,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          5.31 M = 0.1547% Params, 5.44 GMACs = 0.8693% MACs, 10.87 GFLOPS = 0.847% FLOPs
+          (qkv): Linear(3.98 M = 0.116% Params, 4.08 GMACs = 0.652% MACs, 8.15 GFLOPS = 0.6353% FLOPs, in_features=1152, out_features=3456, bias=True)
+          (q_norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (k_norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (attn_drop): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+          (proj): Linear(1.33 M = 0.0387% Params, 1.36 GMACs = 0.2173% MACs, 2.72 GFLOPS = 0.2118% FLOPs, in_features=1152, out_features=1152, bias=True)
+          (proj_drop): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+        )
+        (ls1): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (drop_path1): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (norm2): LayerNorm(2.3 K = 0.0001% Params, 0 MACs = 0% MACs, 5.9 MFLOPS = 0.0005% FLOPs, (1152,), eps=1e-06, elementwise_affine=True)
+        (mlp): Mlp(
+          9.92 M = 0.2889% Params, 10.15 GMACs = 1.6239% MACs, 20.31 GFLOPS = 1.5827% FLOPs
+          (fc1): Linear(4.96 M = 0.1445% Params, 5.08 GMACs = 0.812% MACs, 10.15 GFLOPS = 0.7912% FLOPs, in_features=1152, out_features=4304, bias=True)
+          (act): GELU(0 = 0% Params, 0 MACs = 0% MACs, 4.41 MFLOPS = 0.0003% FLOPs, approximate='none')
+          (drop1): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+          (norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (fc2): Linear(4.96 M = 0.1444% Params, 5.08 GMACs = 0.812% MACs, 10.15 GFLOPS = 0.7912% FLOPs, in_features=4304, out_features=1152, bias=True)
+          (drop2): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+        )
+        (ls2): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (drop_path2): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+      )
+      (5): Block(
+        15.24 M = 0.4437% Params, 15.59 GMACs = 2.4932% MACs, 31.2 GFLOPS = 2.4308% FLOPs
+        (norm1): LayerNorm(2.3 K = 0.0001% Params, 0 MACs = 0% MACs, 5.9 MFLOPS = 0.0005% FLOPs, (1152,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          5.31 M = 0.1547% Params, 5.44 GMACs = 0.8693% MACs, 10.87 GFLOPS = 0.847% FLOPs
+          (qkv): Linear(3.98 M = 0.116% Params, 4.08 GMACs = 0.652% MACs, 8.15 GFLOPS = 0.6353% FLOPs, in_features=1152, out_features=3456, bias=True)
+          (q_norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (k_norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (attn_drop): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+          (proj): Linear(1.33 M = 0.0387% Params, 1.36 GMACs = 0.2173% MACs, 2.72 GFLOPS = 0.2118% FLOPs, in_features=1152, out_features=1152, bias=True)
+          (proj_drop): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+        )
+        (ls1): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (drop_path1): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (norm2): LayerNorm(2.3 K = 0.0001% Params, 0 MACs = 0% MACs, 5.9 MFLOPS = 0.0005% FLOPs, (1152,), eps=1e-06, elementwise_affine=True)
+        (mlp): Mlp(
+          9.92 M = 0.2889% Params, 10.15 GMACs = 1.6239% MACs, 20.31 GFLOPS = 1.5827% FLOPs
+          (fc1): Linear(4.96 M = 0.1445% Params, 5.08 GMACs = 0.812% MACs, 10.15 GFLOPS = 0.7912% FLOPs, in_features=1152, out_features=4304, bias=True)
+          (act): GELU(0 = 0% Params, 0 MACs = 0% MACs, 4.41 MFLOPS = 0.0003% FLOPs, approximate='none')
+          (drop1): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+          (norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (fc2): Linear(4.96 M = 0.1444% Params, 5.08 GMACs = 0.812% MACs, 10.15 GFLOPS = 0.7912% FLOPs, in_features=4304, out_features=1152, bias=True)
+          (drop2): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+        )
+        (ls2): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (drop_path2): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+      )
+      (6): Block(
+        15.24 M = 0.4437% Params, 15.59 GMACs = 2.4932% MACs, 31.2 GFLOPS = 2.4308% FLOPs
+        (norm1): LayerNorm(2.3 K = 0.0001% Params, 0 MACs = 0% MACs, 5.9 MFLOPS = 0.0005% FLOPs, (1152,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          5.31 M = 0.1547% Params, 5.44 GMACs = 0.8693% MACs, 10.87 GFLOPS = 0.847% FLOPs
+          (qkv): Linear(3.98 M = 0.116% Params, 4.08 GMACs = 0.652% MACs, 8.15 GFLOPS = 0.6353% FLOPs, in_features=1152, out_features=3456, bias=True)
+          (q_norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (k_norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (attn_drop): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+          (proj): Linear(1.33 M = 0.0387% Params, 1.36 GMACs = 0.2173% MACs, 2.72 GFLOPS = 0.2118% FLOPs, in_features=1152, out_features=1152, bias=True)
+          (proj_drop): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+        )
+        (ls1): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (drop_path1): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (norm2): LayerNorm(2.3 K = 0.0001% Params, 0 MACs = 0% MACs, 5.9 MFLOPS = 0.0005% FLOPs, (1152,), eps=1e-06, elementwise_affine=True)
+        (mlp): Mlp(
+          9.92 M = 0.2889% Params, 10.15 GMACs = 1.6239% MACs, 20.31 GFLOPS = 1.5827% FLOPs
+          (fc1): Linear(4.96 M = 0.1445% Params, 5.08 GMACs = 0.812% MACs, 10.15 GFLOPS = 0.7912% FLOPs, in_features=1152, out_features=4304, bias=True)
+          (act): GELU(0 = 0% Params, 0 MACs = 0% MACs, 4.41 MFLOPS = 0.0003% FLOPs, approximate='none')
+          (drop1): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+          (norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (fc2): Linear(4.96 M = 0.1444% Params, 5.08 GMACs = 0.812% MACs, 10.15 GFLOPS = 0.7912% FLOPs, in_features=4304, out_features=1152, bias=True)
+          (drop2): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+        )
+        (ls2): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (drop_path2): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+      )
+      (7): Block(
+        15.24 M = 0.4437% Params, 15.59 GMACs = 2.4932% MACs, 31.2 GFLOPS = 2.4308% FLOPs
+        (norm1): LayerNorm(2.3 K = 0.0001% Params, 0 MACs = 0% MACs, 5.9 MFLOPS = 0.0005% FLOPs, (1152,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          5.31 M = 0.1547% Params, 5.44 GMACs = 0.8693% MACs, 10.87 GFLOPS = 0.847% FLOPs
+          (qkv): Linear(3.98 M = 0.116% Params, 4.08 GMACs = 0.652% MACs, 8.15 GFLOPS = 0.6353% FLOPs, in_features=1152, out_features=3456, bias=True)
+          (q_norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (k_norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (attn_drop): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+          (proj): Linear(1.33 M = 0.0387% Params, 1.36 GMACs = 0.2173% MACs, 2.72 GFLOPS = 0.2118% FLOPs, in_features=1152, out_features=1152, bias=True)
+          (proj_drop): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+        )
+        (ls1): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (drop_path1): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (norm2): LayerNorm(2.3 K = 0.0001% Params, 0 MACs = 0% MACs, 5.9 MFLOPS = 0.0005% FLOPs, (1152,), eps=1e-06, elementwise_affine=True)
+        (mlp): Mlp(
+          9.92 M = 0.2889% Params, 10.15 GMACs = 1.6239% MACs, 20.31 GFLOPS = 1.5827% FLOPs
+          (fc1): Linear(4.96 M = 0.1445% Params, 5.08 GMACs = 0.812% MACs, 10.15 GFLOPS = 0.7912% FLOPs, in_features=1152, out_features=4304, bias=True)
+          (act): GELU(0 = 0% Params, 0 MACs = 0% MACs, 4.41 MFLOPS = 0.0003% FLOPs, approximate='none')
+          (drop1): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+          (norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (fc2): Linear(4.96 M = 0.1444% Params, 5.08 GMACs = 0.812% MACs, 10.15 GFLOPS = 0.7912% FLOPs, in_features=4304, out_features=1152, bias=True)
+          (drop2): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+        )
+        (ls2): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (drop_path2): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+      )
+      (8): Block(
+        15.24 M = 0.4437% Params, 15.59 GMACs = 2.4932% MACs, 31.2 GFLOPS = 2.4308% FLOPs
+        (norm1): LayerNorm(2.3 K = 0.0001% Params, 0 MACs = 0% MACs, 5.9 MFLOPS = 0.0005% FLOPs, (1152,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          5.31 M = 0.1547% Params, 5.44 GMACs = 0.8693% MACs, 10.87 GFLOPS = 0.847% FLOPs
+          (qkv): Linear(3.98 M = 0.116% Params, 4.08 GMACs = 0.652% MACs, 8.15 GFLOPS = 0.6353% FLOPs, in_features=1152, out_features=3456, bias=True)
+          (q_norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (k_norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (attn_drop): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+          (proj): Linear(1.33 M = 0.0387% Params, 1.36 GMACs = 0.2173% MACs, 2.72 GFLOPS = 0.2118% FLOPs, in_features=1152, out_features=1152, bias=True)
+          (proj_drop): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+        )
+        (ls1): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (drop_path1): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (norm2): LayerNorm(2.3 K = 0.0001% Params, 0 MACs = 0% MACs, 5.9 MFLOPS = 0.0005% FLOPs, (1152,), eps=1e-06, elementwise_affine=True)
+        (mlp): Mlp(
+          9.92 M = 0.2889% Params, 10.15 GMACs = 1.6239% MACs, 20.31 GFLOPS = 1.5827% FLOPs
+          (fc1): Linear(4.96 M = 0.1445% Params, 5.08 GMACs = 0.812% MACs, 10.15 GFLOPS = 0.7912% FLOPs, in_features=1152, out_features=4304, bias=True)
+          (act): GELU(0 = 0% Params, 0 MACs = 0% MACs, 4.41 MFLOPS = 0.0003% FLOPs, approximate='none')
+          (drop1): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+          (norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (fc2): Linear(4.96 M = 0.1444% Params, 5.08 GMACs = 0.812% MACs, 10.15 GFLOPS = 0.7912% FLOPs, in_features=4304, out_features=1152, bias=True)
+          (drop2): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+        )
+        (ls2): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (drop_path2): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+      )
+      (9): Block(
+        15.24 M = 0.4437% Params, 15.59 GMACs = 2.4932% MACs, 31.2 GFLOPS = 2.4308% FLOPs
+        (norm1): LayerNorm(2.3 K = 0.0001% Params, 0 MACs = 0% MACs, 5.9 MFLOPS = 0.0005% FLOPs, (1152,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          5.31 M = 0.1547% Params, 5.44 GMACs = 0.8693% MACs, 10.87 GFLOPS = 0.847% FLOPs
+          (qkv): Linear(3.98 M = 0.116% Params, 4.08 GMACs = 0.652% MACs, 8.15 GFLOPS = 0.6353% FLOPs, in_features=1152, out_features=3456, bias=True)
+          (q_norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (k_norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (attn_drop): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+          (proj): Linear(1.33 M = 0.0387% Params, 1.36 GMACs = 0.2173% MACs, 2.72 GFLOPS = 0.2118% FLOPs, in_features=1152, out_features=1152, bias=True)
+          (proj_drop): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+        )
+        (ls1): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (drop_path1): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (norm2): LayerNorm(2.3 K = 0.0001% Params, 0 MACs = 0% MACs, 5.9 MFLOPS = 0.0005% FLOPs, (1152,), eps=1e-06, elementwise_affine=True)
+        (mlp): Mlp(
+          9.92 M = 0.2889% Params, 10.15 GMACs = 1.6239% MACs, 20.31 GFLOPS = 1.5827% FLOPs
+          (fc1): Linear(4.96 M = 0.1445% Params, 5.08 GMACs = 0.812% MACs, 10.15 GFLOPS = 0.7912% FLOPs, in_features=1152, out_features=4304, bias=True)
+          (act): GELU(0 = 0% Params, 0 MACs = 0% MACs, 4.41 MFLOPS = 0.0003% FLOPs, approximate='none')
+          (drop1): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+          (norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (fc2): Linear(4.96 M = 0.1444% Params, 5.08 GMACs = 0.812% MACs, 10.15 GFLOPS = 0.7912% FLOPs, in_features=4304, out_features=1152, bias=True)
+          (drop2): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+        )
+        (ls2): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (drop_path2): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+      )
+      (10): Block(
+        15.24 M = 0.4437% Params, 15.59 GMACs = 2.4932% MACs, 31.2 GFLOPS = 2.4308% FLOPs
+        (norm1): LayerNorm(2.3 K = 0.0001% Params, 0 MACs = 0% MACs, 5.9 MFLOPS = 0.0005% FLOPs, (1152,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          5.31 M = 0.1547% Params, 5.44 GMACs = 0.8693% MACs, 10.87 GFLOPS = 0.847% FLOPs
+          (qkv): Linear(3.98 M = 0.116% Params, 4.08 GMACs = 0.652% MACs, 8.15 GFLOPS = 0.6353% FLOPs, in_features=1152, out_features=3456, bias=True)
+          (q_norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (k_norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (attn_drop): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+          (proj): Linear(1.33 M = 0.0387% Params, 1.36 GMACs = 0.2173% MACs, 2.72 GFLOPS = 0.2118% FLOPs, in_features=1152, out_features=1152, bias=True)
+          (proj_drop): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+        )
+        (ls1): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (drop_path1): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (norm2): LayerNorm(2.3 K = 0.0001% Params, 0 MACs = 0% MACs, 5.9 MFLOPS = 0.0005% FLOPs, (1152,), eps=1e-06, elementwise_affine=True)
+        (mlp): Mlp(
+          9.92 M = 0.2889% Params, 10.15 GMACs = 1.6239% MACs, 20.31 GFLOPS = 1.5827% FLOPs
+          (fc1): Linear(4.96 M = 0.1445% Params, 5.08 GMACs = 0.812% MACs, 10.15 GFLOPS = 0.7912% FLOPs, in_features=1152, out_features=4304, bias=True)
+          (act): GELU(0 = 0% Params, 0 MACs = 0% MACs, 4.41 MFLOPS = 0.0003% FLOPs, approximate='none')
+          (drop1): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+          (norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (fc2): Linear(4.96 M = 0.1444% Params, 5.08 GMACs = 0.812% MACs, 10.15 GFLOPS = 0.7912% FLOPs, in_features=4304, out_features=1152, bias=True)
+          (drop2): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+        )
+        (ls2): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (drop_path2): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+      )
+      (11): Block(
+        15.24 M = 0.4437% Params, 15.59 GMACs = 2.4932% MACs, 31.2 GFLOPS = 2.4308% FLOPs
+        (norm1): LayerNorm(2.3 K = 0.0001% Params, 0 MACs = 0% MACs, 5.9 MFLOPS = 0.0005% FLOPs, (1152,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          5.31 M = 0.1547% Params, 5.44 GMACs = 0.8693% MACs, 10.87 GFLOPS = 0.847% FLOPs
+          (qkv): Linear(3.98 M = 0.116% Params, 4.08 GMACs = 0.652% MACs, 8.15 GFLOPS = 0.6353% FLOPs, in_features=1152, out_features=3456, bias=True)
+          (q_norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (k_norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (attn_drop): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+          (proj): Linear(1.33 M = 0.0387% Params, 1.36 GMACs = 0.2173% MACs, 2.72 GFLOPS = 0.2118% FLOPs, in_features=1152, out_features=1152, bias=True)
+          (proj_drop): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+        )
+        (ls1): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (drop_path1): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (norm2): LayerNorm(2.3 K = 0.0001% Params, 0 MACs = 0% MACs, 5.9 MFLOPS = 0.0005% FLOPs, (1152,), eps=1e-06, elementwise_affine=True)
+        (mlp): Mlp(
+          9.92 M = 0.2889% Params, 10.15 GMACs = 1.6239% MACs, 20.31 GFLOPS = 1.5827% FLOPs
+          (fc1): Linear(4.96 M = 0.1445% Params, 5.08 GMACs = 0.812% MACs, 10.15 GFLOPS = 0.7912% FLOPs, in_features=1152, out_features=4304, bias=True)
+          (act): GELU(0 = 0% Params, 0 MACs = 0% MACs, 4.41 MFLOPS = 0.0003% FLOPs, approximate='none')
+          (drop1): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+          (norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (fc2): Linear(4.96 M = 0.1444% Params, 5.08 GMACs = 0.812% MACs, 10.15 GFLOPS = 0.7912% FLOPs, in_features=4304, out_features=1152, bias=True)
+          (drop2): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+        )
+        (ls2): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (drop_path2): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+      )
+      (12): Block(
+        15.24 M = 0.4437% Params, 15.59 GMACs = 2.4932% MACs, 31.2 GFLOPS = 2.4308% FLOPs
+        (norm1): LayerNorm(2.3 K = 0.0001% Params, 0 MACs = 0% MACs, 5.9 MFLOPS = 0.0005% FLOPs, (1152,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          5.31 M = 0.1547% Params, 5.44 GMACs = 0.8693% MACs, 10.87 GFLOPS = 0.847% FLOPs
+          (qkv): Linear(3.98 M = 0.116% Params, 4.08 GMACs = 0.652% MACs, 8.15 GFLOPS = 0.6353% FLOPs, in_features=1152, out_features=3456, bias=True)
+          (q_norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (k_norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (attn_drop): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+          (proj): Linear(1.33 M = 0.0387% Params, 1.36 GMACs = 0.2173% MACs, 2.72 GFLOPS = 0.2118% FLOPs, in_features=1152, out_features=1152, bias=True)
+          (proj_drop): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+        )
+        (ls1): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (drop_path1): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (norm2): LayerNorm(2.3 K = 0.0001% Params, 0 MACs = 0% MACs, 5.9 MFLOPS = 0.0005% FLOPs, (1152,), eps=1e-06, elementwise_affine=True)
+        (mlp): Mlp(
+          9.92 M = 0.2889% Params, 10.15 GMACs = 1.6239% MACs, 20.31 GFLOPS = 1.5827% FLOPs
+          (fc1): Linear(4.96 M = 0.1445% Params, 5.08 GMACs = 0.812% MACs, 10.15 GFLOPS = 0.7912% FLOPs, in_features=1152, out_features=4304, bias=True)
+          (act): GELU(0 = 0% Params, 0 MACs = 0% MACs, 4.41 MFLOPS = 0.0003% FLOPs, approximate='none')
+          (drop1): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+          (norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (fc2): Linear(4.96 M = 0.1444% Params, 5.08 GMACs = 0.812% MACs, 10.15 GFLOPS = 0.7912% FLOPs, in_features=4304, out_features=1152, bias=True)
+          (drop2): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+        )
+        (ls2): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (drop_path2): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+      )
+      (13): Block(
+        15.24 M = 0.4437% Params, 15.59 GMACs = 2.4932% MACs, 31.2 GFLOPS = 2.4308% FLOPs
+        (norm1): LayerNorm(2.3 K = 0.0001% Params, 0 MACs = 0% MACs, 5.9 MFLOPS = 0.0005% FLOPs, (1152,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          5.31 M = 0.1547% Params, 5.44 GMACs = 0.8693% MACs, 10.87 GFLOPS = 0.847% FLOPs
+          (qkv): Linear(3.98 M = 0.116% Params, 4.08 GMACs = 0.652% MACs, 8.15 GFLOPS = 0.6353% FLOPs, in_features=1152, out_features=3456, bias=True)
+          (q_norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (k_norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (attn_drop): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+          (proj): Linear(1.33 M = 0.0387% Params, 1.36 GMACs = 0.2173% MACs, 2.72 GFLOPS = 0.2118% FLOPs, in_features=1152, out_features=1152, bias=True)
+          (proj_drop): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+        )
+        (ls1): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (drop_path1): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (norm2): LayerNorm(2.3 K = 0.0001% Params, 0 MACs = 0% MACs, 5.9 MFLOPS = 0.0005% FLOPs, (1152,), eps=1e-06, elementwise_affine=True)
+        (mlp): Mlp(
+          9.92 M = 0.2889% Params, 10.15 GMACs = 1.6239% MACs, 20.31 GFLOPS = 1.5827% FLOPs
+          (fc1): Linear(4.96 M = 0.1445% Params, 5.08 GMACs = 0.812% MACs, 10.15 GFLOPS = 0.7912% FLOPs, in_features=1152, out_features=4304, bias=True)
+          (act): GELU(0 = 0% Params, 0 MACs = 0% MACs, 4.41 MFLOPS = 0.0003% FLOPs, approximate='none')
+          (drop1): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+          (norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (fc2): Linear(4.96 M = 0.1444% Params, 5.08 GMACs = 0.812% MACs, 10.15 GFLOPS = 0.7912% FLOPs, in_features=4304, out_features=1152, bias=True)
+          (drop2): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+        )
+        (ls2): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (drop_path2): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+      )
+      (14): Block(
+        15.24 M = 0.4437% Params, 15.59 GMACs = 2.4932% MACs, 31.2 GFLOPS = 2.4308% FLOPs
+        (norm1): LayerNorm(2.3 K = 0.0001% Params, 0 MACs = 0% MACs, 5.9 MFLOPS = 0.0005% FLOPs, (1152,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          5.31 M = 0.1547% Params, 5.44 GMACs = 0.8693% MACs, 10.87 GFLOPS = 0.847% FLOPs
+          (qkv): Linear(3.98 M = 0.116% Params, 4.08 GMACs = 0.652% MACs, 8.15 GFLOPS = 0.6353% FLOPs, in_features=1152, out_features=3456, bias=True)
+          (q_norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (k_norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (attn_drop): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+          (proj): Linear(1.33 M = 0.0387% Params, 1.36 GMACs = 0.2173% MACs, 2.72 GFLOPS = 0.2118% FLOPs, in_features=1152, out_features=1152, bias=True)
+          (proj_drop): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+        )
+        (ls1): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (drop_path1): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (norm2): LayerNorm(2.3 K = 0.0001% Params, 0 MACs = 0% MACs, 5.9 MFLOPS = 0.0005% FLOPs, (1152,), eps=1e-06, elementwise_affine=True)
+        (mlp): Mlp(
+          9.92 M = 0.2889% Params, 10.15 GMACs = 1.6239% MACs, 20.31 GFLOPS = 1.5827% FLOPs
+          (fc1): Linear(4.96 M = 0.1445% Params, 5.08 GMACs = 0.812% MACs, 10.15 GFLOPS = 0.7912% FLOPs, in_features=1152, out_features=4304, bias=True)
+          (act): GELU(0 = 0% Params, 0 MACs = 0% MACs, 4.41 MFLOPS = 0.0003% FLOPs, approximate='none')
+          (drop1): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+          (norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (fc2): Linear(4.96 M = 0.1444% Params, 5.08 GMACs = 0.812% MACs, 10.15 GFLOPS = 0.7912% FLOPs, in_features=4304, out_features=1152, bias=True)
+          (drop2): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+        )
+        (ls2): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (drop_path2): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+      )
+      (15): Block(
+        15.24 M = 0.4437% Params, 15.59 GMACs = 2.4932% MACs, 31.2 GFLOPS = 2.4308% FLOPs
+        (norm1): LayerNorm(2.3 K = 0.0001% Params, 0 MACs = 0% MACs, 5.9 MFLOPS = 0.0005% FLOPs, (1152,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          5.31 M = 0.1547% Params, 5.44 GMACs = 0.8693% MACs, 10.87 GFLOPS = 0.847% FLOPs
+          (qkv): Linear(3.98 M = 0.116% Params, 4.08 GMACs = 0.652% MACs, 8.15 GFLOPS = 0.6353% FLOPs, in_features=1152, out_features=3456, bias=True)
+          (q_norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (k_norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (attn_drop): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+          (proj): Linear(1.33 M = 0.0387% Params, 1.36 GMACs = 0.2173% MACs, 2.72 GFLOPS = 0.2118% FLOPs, in_features=1152, out_features=1152, bias=True)
+          (proj_drop): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+        )
+        (ls1): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (drop_path1): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (norm2): LayerNorm(2.3 K = 0.0001% Params, 0 MACs = 0% MACs, 5.9 MFLOPS = 0.0005% FLOPs, (1152,), eps=1e-06, elementwise_affine=True)
+        (mlp): Mlp(
+          9.92 M = 0.2889% Params, 10.15 GMACs = 1.6239% MACs, 20.31 GFLOPS = 1.5827% FLOPs
+          (fc1): Linear(4.96 M = 0.1445% Params, 5.08 GMACs = 0.812% MACs, 10.15 GFLOPS = 0.7912% FLOPs, in_features=1152, out_features=4304, bias=True)
+          (act): GELU(0 = 0% Params, 0 MACs = 0% MACs, 4.41 MFLOPS = 0.0003% FLOPs, approximate='none')
+          (drop1): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+          (norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (fc2): Linear(4.96 M = 0.1444% Params, 5.08 GMACs = 0.812% MACs, 10.15 GFLOPS = 0.7912% FLOPs, in_features=4304, out_features=1152, bias=True)
+          (drop2): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+        )
+        (ls2): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (drop_path2): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+      )
+      (16): Block(
+        15.24 M = 0.4437% Params, 15.59 GMACs = 2.4932% MACs, 31.2 GFLOPS = 2.4308% FLOPs
+        (norm1): LayerNorm(2.3 K = 0.0001% Params, 0 MACs = 0% MACs, 5.9 MFLOPS = 0.0005% FLOPs, (1152,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          5.31 M = 0.1547% Params, 5.44 GMACs = 0.8693% MACs, 10.87 GFLOPS = 0.847% FLOPs
+          (qkv): Linear(3.98 M = 0.116% Params, 4.08 GMACs = 0.652% MACs, 8.15 GFLOPS = 0.6353% FLOPs, in_features=1152, out_features=3456, bias=True)
+          (q_norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (k_norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (attn_drop): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+          (proj): Linear(1.33 M = 0.0387% Params, 1.36 GMACs = 0.2173% MACs, 2.72 GFLOPS = 0.2118% FLOPs, in_features=1152, out_features=1152, bias=True)
+          (proj_drop): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+        )
+        (ls1): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (drop_path1): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (norm2): LayerNorm(2.3 K = 0.0001% Params, 0 MACs = 0% MACs, 5.9 MFLOPS = 0.0005% FLOPs, (1152,), eps=1e-06, elementwise_affine=True)
+        (mlp): Mlp(
+          9.92 M = 0.2889% Params, 10.15 GMACs = 1.6239% MACs, 20.31 GFLOPS = 1.5827% FLOPs
+          (fc1): Linear(4.96 M = 0.1445% Params, 5.08 GMACs = 0.812% MACs, 10.15 GFLOPS = 0.7912% FLOPs, in_features=1152, out_features=4304, bias=True)
+          (act): GELU(0 = 0% Params, 0 MACs = 0% MACs, 4.41 MFLOPS = 0.0003% FLOPs, approximate='none')
+          (drop1): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+          (norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (fc2): Linear(4.96 M = 0.1444% Params, 5.08 GMACs = 0.812% MACs, 10.15 GFLOPS = 0.7912% FLOPs, in_features=4304, out_features=1152, bias=True)
+          (drop2): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+        )
+        (ls2): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (drop_path2): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+      )
+      (17): Block(
+        15.24 M = 0.4437% Params, 15.59 GMACs = 2.4932% MACs, 31.2 GFLOPS = 2.4308% FLOPs
+        (norm1): LayerNorm(2.3 K = 0.0001% Params, 0 MACs = 0% MACs, 5.9 MFLOPS = 0.0005% FLOPs, (1152,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          5.31 M = 0.1547% Params, 5.44 GMACs = 0.8693% MACs, 10.87 GFLOPS = 0.847% FLOPs
+          (qkv): Linear(3.98 M = 0.116% Params, 4.08 GMACs = 0.652% MACs, 8.15 GFLOPS = 0.6353% FLOPs, in_features=1152, out_features=3456, bias=True)
+          (q_norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (k_norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (attn_drop): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+          (proj): Linear(1.33 M = 0.0387% Params, 1.36 GMACs = 0.2173% MACs, 2.72 GFLOPS = 0.2118% FLOPs, in_features=1152, out_features=1152, bias=True)
+          (proj_drop): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+        )
+        (ls1): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (drop_path1): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (norm2): LayerNorm(2.3 K = 0.0001% Params, 0 MACs = 0% MACs, 5.9 MFLOPS = 0.0005% FLOPs, (1152,), eps=1e-06, elementwise_affine=True)
+        (mlp): Mlp(
+          9.92 M = 0.2889% Params, 10.15 GMACs = 1.6239% MACs, 20.31 GFLOPS = 1.5827% FLOPs
+          (fc1): Linear(4.96 M = 0.1445% Params, 5.08 GMACs = 0.812% MACs, 10.15 GFLOPS = 0.7912% FLOPs, in_features=1152, out_features=4304, bias=True)
+          (act): GELU(0 = 0% Params, 0 MACs = 0% MACs, 4.41 MFLOPS = 0.0003% FLOPs, approximate='none')
+          (drop1): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+          (norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (fc2): Linear(4.96 M = 0.1444% Params, 5.08 GMACs = 0.812% MACs, 10.15 GFLOPS = 0.7912% FLOPs, in_features=4304, out_features=1152, bias=True)
+          (drop2): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+        )
+        (ls2): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (drop_path2): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+      )
+      (18): Block(
+        15.24 M = 0.4437% Params, 15.59 GMACs = 2.4932% MACs, 31.2 GFLOPS = 2.4308% FLOPs
+        (norm1): LayerNorm(2.3 K = 0.0001% Params, 0 MACs = 0% MACs, 5.9 MFLOPS = 0.0005% FLOPs, (1152,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          5.31 M = 0.1547% Params, 5.44 GMACs = 0.8693% MACs, 10.87 GFLOPS = 0.847% FLOPs
+          (qkv): Linear(3.98 M = 0.116% Params, 4.08 GMACs = 0.652% MACs, 8.15 GFLOPS = 0.6353% FLOPs, in_features=1152, out_features=3456, bias=True)
+          (q_norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (k_norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (attn_drop): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+          (proj): Linear(1.33 M = 0.0387% Params, 1.36 GMACs = 0.2173% MACs, 2.72 GFLOPS = 0.2118% FLOPs, in_features=1152, out_features=1152, bias=True)
+          (proj_drop): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+        )
+        (ls1): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (drop_path1): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (norm2): LayerNorm(2.3 K = 0.0001% Params, 0 MACs = 0% MACs, 5.9 MFLOPS = 0.0005% FLOPs, (1152,), eps=1e-06, elementwise_affine=True)
+        (mlp): Mlp(
+          9.92 M = 0.2889% Params, 10.15 GMACs = 1.6239% MACs, 20.31 GFLOPS = 1.5827% FLOPs
+          (fc1): Linear(4.96 M = 0.1445% Params, 5.08 GMACs = 0.812% MACs, 10.15 GFLOPS = 0.7912% FLOPs, in_features=1152, out_features=4304, bias=True)
+          (act): GELU(0 = 0% Params, 0 MACs = 0% MACs, 4.41 MFLOPS = 0.0003% FLOPs, approximate='none')
+          (drop1): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+          (norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (fc2): Linear(4.96 M = 0.1444% Params, 5.08 GMACs = 0.812% MACs, 10.15 GFLOPS = 0.7912% FLOPs, in_features=4304, out_features=1152, bias=True)
+          (drop2): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+        )
+        (ls2): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (drop_path2): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+      )
+      (19): Block(
+        15.24 M = 0.4437% Params, 15.59 GMACs = 2.4932% MACs, 31.2 GFLOPS = 2.4308% FLOPs
+        (norm1): LayerNorm(2.3 K = 0.0001% Params, 0 MACs = 0% MACs, 5.9 MFLOPS = 0.0005% FLOPs, (1152,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          5.31 M = 0.1547% Params, 5.44 GMACs = 0.8693% MACs, 10.87 GFLOPS = 0.847% FLOPs
+          (qkv): Linear(3.98 M = 0.116% Params, 4.08 GMACs = 0.652% MACs, 8.15 GFLOPS = 0.6353% FLOPs, in_features=1152, out_features=3456, bias=True)
+          (q_norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (k_norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (attn_drop): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+          (proj): Linear(1.33 M = 0.0387% Params, 1.36 GMACs = 0.2173% MACs, 2.72 GFLOPS = 0.2118% FLOPs, in_features=1152, out_features=1152, bias=True)
+          (proj_drop): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+        )
+        (ls1): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (drop_path1): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (norm2): LayerNorm(2.3 K = 0.0001% Params, 0 MACs = 0% MACs, 5.9 MFLOPS = 0.0005% FLOPs, (1152,), eps=1e-06, elementwise_affine=True)
+        (mlp): Mlp(
+          9.92 M = 0.2889% Params, 10.15 GMACs = 1.6239% MACs, 20.31 GFLOPS = 1.5827% FLOPs
+          (fc1): Linear(4.96 M = 0.1445% Params, 5.08 GMACs = 0.812% MACs, 10.15 GFLOPS = 0.7912% FLOPs, in_features=1152, out_features=4304, bias=True)
+          (act): GELU(0 = 0% Params, 0 MACs = 0% MACs, 4.41 MFLOPS = 0.0003% FLOPs, approximate='none')
+          (drop1): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+          (norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (fc2): Linear(4.96 M = 0.1444% Params, 5.08 GMACs = 0.812% MACs, 10.15 GFLOPS = 0.7912% FLOPs, in_features=4304, out_features=1152, bias=True)
+          (drop2): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+        )
+        (ls2): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (drop_path2): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+      )
+      (20): Block(
+        15.24 M = 0.4437% Params, 15.59 GMACs = 2.4932% MACs, 31.2 GFLOPS = 2.4308% FLOPs
+        (norm1): LayerNorm(2.3 K = 0.0001% Params, 0 MACs = 0% MACs, 5.9 MFLOPS = 0.0005% FLOPs, (1152,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          5.31 M = 0.1547% Params, 5.44 GMACs = 0.8693% MACs, 10.87 GFLOPS = 0.847% FLOPs
+          (qkv): Linear(3.98 M = 0.116% Params, 4.08 GMACs = 0.652% MACs, 8.15 GFLOPS = 0.6353% FLOPs, in_features=1152, out_features=3456, bias=True)
+          (q_norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (k_norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (attn_drop): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+          (proj): Linear(1.33 M = 0.0387% Params, 1.36 GMACs = 0.2173% MACs, 2.72 GFLOPS = 0.2118% FLOPs, in_features=1152, out_features=1152, bias=True)
+          (proj_drop): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+        )
+        (ls1): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (drop_path1): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (norm2): LayerNorm(2.3 K = 0.0001% Params, 0 MACs = 0% MACs, 5.9 MFLOPS = 0.0005% FLOPs, (1152,), eps=1e-06, elementwise_affine=True)
+        (mlp): Mlp(
+          9.92 M = 0.2889% Params, 10.15 GMACs = 1.6239% MACs, 20.31 GFLOPS = 1.5827% FLOPs
+          (fc1): Linear(4.96 M = 0.1445% Params, 5.08 GMACs = 0.812% MACs, 10.15 GFLOPS = 0.7912% FLOPs, in_features=1152, out_features=4304, bias=True)
+          (act): GELU(0 = 0% Params, 0 MACs = 0% MACs, 4.41 MFLOPS = 0.0003% FLOPs, approximate='none')
+          (drop1): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+          (norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (fc2): Linear(4.96 M = 0.1444% Params, 5.08 GMACs = 0.812% MACs, 10.15 GFLOPS = 0.7912% FLOPs, in_features=4304, out_features=1152, bias=True)
+          (drop2): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+        )
+        (ls2): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (drop_path2): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+      )
+      (21): Block(
+        15.24 M = 0.4437% Params, 15.59 GMACs = 2.4932% MACs, 31.2 GFLOPS = 2.4308% FLOPs
+        (norm1): LayerNorm(2.3 K = 0.0001% Params, 0 MACs = 0% MACs, 5.9 MFLOPS = 0.0005% FLOPs, (1152,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          5.31 M = 0.1547% Params, 5.44 GMACs = 0.8693% MACs, 10.87 GFLOPS = 0.847% FLOPs
+          (qkv): Linear(3.98 M = 0.116% Params, 4.08 GMACs = 0.652% MACs, 8.15 GFLOPS = 0.6353% FLOPs, in_features=1152, out_features=3456, bias=True)
+          (q_norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (k_norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (attn_drop): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+          (proj): Linear(1.33 M = 0.0387% Params, 1.36 GMACs = 0.2173% MACs, 2.72 GFLOPS = 0.2118% FLOPs, in_features=1152, out_features=1152, bias=True)
+          (proj_drop): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+        )
+        (ls1): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (drop_path1): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (norm2): LayerNorm(2.3 K = 0.0001% Params, 0 MACs = 0% MACs, 5.9 MFLOPS = 0.0005% FLOPs, (1152,), eps=1e-06, elementwise_affine=True)
+        (mlp): Mlp(
+          9.92 M = 0.2889% Params, 10.15 GMACs = 1.6239% MACs, 20.31 GFLOPS = 1.5827% FLOPs
+          (fc1): Linear(4.96 M = 0.1445% Params, 5.08 GMACs = 0.812% MACs, 10.15 GFLOPS = 0.7912% FLOPs, in_features=1152, out_features=4304, bias=True)
+          (act): GELU(0 = 0% Params, 0 MACs = 0% MACs, 4.41 MFLOPS = 0.0003% FLOPs, approximate='none')
+          (drop1): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+          (norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (fc2): Linear(4.96 M = 0.1444% Params, 5.08 GMACs = 0.812% MACs, 10.15 GFLOPS = 0.7912% FLOPs, in_features=4304, out_features=1152, bias=True)
+          (drop2): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+        )
+        (ls2): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (drop_path2): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+      )
+      (22): Block(
+        15.24 M = 0.4437% Params, 15.59 GMACs = 2.4932% MACs, 31.2 GFLOPS = 2.4308% FLOPs
+        (norm1): LayerNorm(2.3 K = 0.0001% Params, 0 MACs = 0% MACs, 5.9 MFLOPS = 0.0005% FLOPs, (1152,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          5.31 M = 0.1547% Params, 5.44 GMACs = 0.8693% MACs, 10.87 GFLOPS = 0.847% FLOPs
+          (qkv): Linear(3.98 M = 0.116% Params, 4.08 GMACs = 0.652% MACs, 8.15 GFLOPS = 0.6353% FLOPs, in_features=1152, out_features=3456, bias=True)
+          (q_norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (k_norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (attn_drop): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+          (proj): Linear(1.33 M = 0.0387% Params, 1.36 GMACs = 0.2173% MACs, 2.72 GFLOPS = 0.2118% FLOPs, in_features=1152, out_features=1152, bias=True)
+          (proj_drop): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+        )
+        (ls1): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (drop_path1): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (norm2): LayerNorm(2.3 K = 0.0001% Params, 0 MACs = 0% MACs, 5.9 MFLOPS = 0.0005% FLOPs, (1152,), eps=1e-06, elementwise_affine=True)
+        (mlp): Mlp(
+          9.92 M = 0.2889% Params, 10.15 GMACs = 1.6239% MACs, 20.31 GFLOPS = 1.5827% FLOPs
+          (fc1): Linear(4.96 M = 0.1445% Params, 5.08 GMACs = 0.812% MACs, 10.15 GFLOPS = 0.7912% FLOPs, in_features=1152, out_features=4304, bias=True)
+          (act): GELU(0 = 0% Params, 0 MACs = 0% MACs, 4.41 MFLOPS = 0.0003% FLOPs, approximate='none')
+          (drop1): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+          (norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (fc2): Linear(4.96 M = 0.1444% Params, 5.08 GMACs = 0.812% MACs, 10.15 GFLOPS = 0.7912% FLOPs, in_features=4304, out_features=1152, bias=True)
+          (drop2): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+        )
+        (ls2): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (drop_path2): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+      )
+      (23): Block(
+        15.24 M = 0.4437% Params, 15.59 GMACs = 2.4932% MACs, 31.2 GFLOPS = 2.4308% FLOPs
+        (norm1): LayerNorm(2.3 K = 0.0001% Params, 0 MACs = 0% MACs, 5.9 MFLOPS = 0.0005% FLOPs, (1152,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          5.31 M = 0.1547% Params, 5.44 GMACs = 0.8693% MACs, 10.87 GFLOPS = 0.847% FLOPs
+          (qkv): Linear(3.98 M = 0.116% Params, 4.08 GMACs = 0.652% MACs, 8.15 GFLOPS = 0.6353% FLOPs, in_features=1152, out_features=3456, bias=True)
+          (q_norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (k_norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (attn_drop): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+          (proj): Linear(1.33 M = 0.0387% Params, 1.36 GMACs = 0.2173% MACs, 2.72 GFLOPS = 0.2118% FLOPs, in_features=1152, out_features=1152, bias=True)
+          (proj_drop): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+        )
+        (ls1): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (drop_path1): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (norm2): LayerNorm(2.3 K = 0.0001% Params, 0 MACs = 0% MACs, 5.9 MFLOPS = 0.0005% FLOPs, (1152,), eps=1e-06, elementwise_affine=True)
+        (mlp): Mlp(
+          9.92 M = 0.2889% Params, 10.15 GMACs = 1.6239% MACs, 20.31 GFLOPS = 1.5827% FLOPs
+          (fc1): Linear(4.96 M = 0.1445% Params, 5.08 GMACs = 0.812% MACs, 10.15 GFLOPS = 0.7912% FLOPs, in_features=1152, out_features=4304, bias=True)
+          (act): GELU(0 = 0% Params, 0 MACs = 0% MACs, 4.41 MFLOPS = 0.0003% FLOPs, approximate='none')
+          (drop1): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+          (norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (fc2): Linear(4.96 M = 0.1444% Params, 5.08 GMACs = 0.812% MACs, 10.15 GFLOPS = 0.7912% FLOPs, in_features=4304, out_features=1152, bias=True)
+          (drop2): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+        )
+        (ls2): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (drop_path2): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+      )
+      (24): Block(
+        15.24 M = 0.4437% Params, 15.59 GMACs = 2.4932% MACs, 31.2 GFLOPS = 2.4308% FLOPs
+        (norm1): LayerNorm(2.3 K = 0.0001% Params, 0 MACs = 0% MACs, 5.9 MFLOPS = 0.0005% FLOPs, (1152,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          5.31 M = 0.1547% Params, 5.44 GMACs = 0.8693% MACs, 10.87 GFLOPS = 0.847% FLOPs
+          (qkv): Linear(3.98 M = 0.116% Params, 4.08 GMACs = 0.652% MACs, 8.15 GFLOPS = 0.6353% FLOPs, in_features=1152, out_features=3456, bias=True)
+          (q_norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (k_norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (attn_drop): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+          (proj): Linear(1.33 M = 0.0387% Params, 1.36 GMACs = 0.2173% MACs, 2.72 GFLOPS = 0.2118% FLOPs, in_features=1152, out_features=1152, bias=True)
+          (proj_drop): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+        )
+        (ls1): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (drop_path1): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (norm2): LayerNorm(2.3 K = 0.0001% Params, 0 MACs = 0% MACs, 5.9 MFLOPS = 0.0005% FLOPs, (1152,), eps=1e-06, elementwise_affine=True)
+        (mlp): Mlp(
+          9.92 M = 0.2889% Params, 10.15 GMACs = 1.6239% MACs, 20.31 GFLOPS = 1.5827% FLOPs
+          (fc1): Linear(4.96 M = 0.1445% Params, 5.08 GMACs = 0.812% MACs, 10.15 GFLOPS = 0.7912% FLOPs, in_features=1152, out_features=4304, bias=True)
+          (act): GELU(0 = 0% Params, 0 MACs = 0% MACs, 4.41 MFLOPS = 0.0003% FLOPs, approximate='none')
+          (drop1): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+          (norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (fc2): Linear(4.96 M = 0.1444% Params, 5.08 GMACs = 0.812% MACs, 10.15 GFLOPS = 0.7912% FLOPs, in_features=4304, out_features=1152, bias=True)
+          (drop2): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+        )
+        (ls2): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (drop_path2): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+      )
+      (25): Block(
+        15.24 M = 0.4437% Params, 15.59 GMACs = 2.4932% MACs, 31.2 GFLOPS = 2.4308% FLOPs
+        (norm1): LayerNorm(2.3 K = 0.0001% Params, 0 MACs = 0% MACs, 5.9 MFLOPS = 0.0005% FLOPs, (1152,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          5.31 M = 0.1547% Params, 5.44 GMACs = 0.8693% MACs, 10.87 GFLOPS = 0.847% FLOPs
+          (qkv): Linear(3.98 M = 0.116% Params, 4.08 GMACs = 0.652% MACs, 8.15 GFLOPS = 0.6353% FLOPs, in_features=1152, out_features=3456, bias=True)
+          (q_norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (k_norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (attn_drop): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+          (proj): Linear(1.33 M = 0.0387% Params, 1.36 GMACs = 0.2173% MACs, 2.72 GFLOPS = 0.2118% FLOPs, in_features=1152, out_features=1152, bias=True)
+          (proj_drop): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+        )
+        (ls1): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (drop_path1): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (norm2): LayerNorm(2.3 K = 0.0001% Params, 0 MACs = 0% MACs, 5.9 MFLOPS = 0.0005% FLOPs, (1152,), eps=1e-06, elementwise_affine=True)
+        (mlp): Mlp(
+          9.92 M = 0.2889% Params, 10.15 GMACs = 1.6239% MACs, 20.31 GFLOPS = 1.5827% FLOPs
+          (fc1): Linear(4.96 M = 0.1445% Params, 5.08 GMACs = 0.812% MACs, 10.15 GFLOPS = 0.7912% FLOPs, in_features=1152, out_features=4304, bias=True)
+          (act): GELU(0 = 0% Params, 0 MACs = 0% MACs, 4.41 MFLOPS = 0.0003% FLOPs, approximate='none')
+          (drop1): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+          (norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          (fc2): Linear(4.96 M = 0.1444% Params, 5.08 GMACs = 0.812% MACs, 10.15 GFLOPS = 0.7912% FLOPs, in_features=4304, out_features=1152, bias=True)
+          (drop2): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+        )
+        (ls2): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+        (drop_path2): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+      )
+    )
+    (norm): LayerNorm(2.3 K = 0.0001% Params, 0 MACs = 0% MACs, 5.9 MFLOPS = 0.0005% FLOPs, (1152,), eps=1e-06, elementwise_affine=True)
+    (attn_pool): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+    (fc_norm): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+    (head_drop): Dropout(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, p=0.0, inplace=False)
+    (head): Identity(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+  )
+  (resampler): Resampler(
+    29.37 M = 0.855% Params, 14.91 GMACs = 2.3846% MACs, 29.84 GFLOPS = 2.3248% FLOPs
+    (kv_proj): Linear(2.65 M = 0.0773% Params, 2.72 GMACs = 0.4347% MACs, 5.44 GFLOPS = 0.4235% FLOPs, in_features=1152, out_features=2304, bias=False)
+    (attn): MultiheadAttention(
+      21.24 M = 0.6185% Params, 11.85 GMACs = 1.8956% MACs, 23.71 GFLOPS = 1.8471% FLOPs
+      (out_proj): NonDynamicallyQuantizableLinear(5.31 M = 0.1546% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, in_features=2304, out_features=2304, bias=True)
+    )
+    (ln_q): LayerNorm(4.61 K = 0.0001% Params, 0 MACs = 0% MACs, 737.28 KFLOPS = 0.0001% FLOPs, (2304,), eps=1e-06, elementwise_affine=True)
+    (ln_kv): LayerNorm(4.61 K = 0.0001% Params, 0 MACs = 0% MACs, 11.8 MFLOPS = 0.0009% FLOPs, (2304,), eps=1e-06, elementwise_affine=True)
+    (ln_post): LayerNorm(4.61 K = 0.0001% Params, 0 MACs = 0% MACs, 737.28 KFLOPS = 0.0001% FLOPs, (2304,), eps=1e-06, elementwise_affine=True)
+  )
+)
+---------------------------------------------------------------------------------------------------

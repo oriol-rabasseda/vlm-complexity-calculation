@@ -1,21 +1,27 @@
 from calflops import calculate_flops
 import torch
 from PIL import Image
-import pip
+from transformers import AutoModel, AutoTokenizer, AutoProcessor
+from utils import *
 
 def get_inputs_minicpmv(image,
                         model,
                         tokenizer,
                         prompt,
-                        max_new_tokens = 1024):
+                        seq_len=128,
+                        max_new_tokens = 1):
     images = [image]
     content = (
             tokenizer.im_start
             + tokenizer.unk_token * model.config.query_num
             + tokenizer.im_end
             + "\n"
-            + prompt
     )
+
+    if prompt != "":
+        content += prompt
+    else:
+        content += tokenizer.unk_token * seq_len
 
     final_input = "<用户>" + content + "<AI>"
 
@@ -30,7 +36,8 @@ def get_inputs_minicpmv_2(image,
                           model,
                           tokenizer,
                           prompt,
-                          max_new_tokens = 1024,
+                          seq_len = 128,
+                          max_new_tokens = 1,
                           num_slices = None):
 
     if num_slices:
@@ -40,7 +47,11 @@ def get_inputs_minicpmv_2(image,
         images, final_placeholder = model.get_slice_image_placeholder(
             image, tokenizer
         )
-        content = final_placeholder + "\n" + prompt
+
+        if prompt != "":
+            content = final_placeholder + "\n" + prompt
+        else:
+            content = final_placeholder + "\n" + tokenizer.unk_token * seq_len
 
         final_input = "<用户>" + content + "<AI>"
 
@@ -80,7 +91,8 @@ def get_inputs_minicpmv_2_6(image,
                             model,
                             tokenizer,
                             prompt,
-                            max_new_tokens = 1024,
+                            seq_len = 128,
+                            max_new_tokens = 1,
                             num_slices = None):
 
     prompt_aux, images, processor = get_inputs_processor(image, model, prompt)
@@ -102,6 +114,9 @@ def get_inputs_minicpmv_2_6(image,
     inputs["tokenizer"] = tokenizer
     inputs["max_new_tokens"] = max_new_tokens
 
+    if prompt == "":
+        inputs = get_raw_input(processor.tokenizer, seq_len, inputs, device)
+
     if 'image_sizes' in inputs:
         del inputs['image_sizes']
 
@@ -111,7 +126,8 @@ def get_inputs_minicpmv_2_5_llama3(image,
                                    model,
                                    tokenizer,
                                    prompt,
-                                   max_new_tokens = 1024,
+                                   seq_len=128,
+                                   max_new_tokens = 1,
                                    num_slices = None):
 
     if num_slices:
@@ -121,6 +137,9 @@ def get_inputs_minicpmv_2_5_llama3(image,
 
     inputs = processor(prompt_aux, images, return_tensors="pt").to(model.device)
 
+    if prompt == "":
+        inputs = get_raw_input(processor.tokenizer, seq_len, inputs, device)
+
     params = dict()
     params["model_inputs"] = inputs
     params["tokenizer"] = tokenizer
@@ -128,49 +147,38 @@ def get_inputs_minicpmv_2_5_llama3(image,
 
     return params
 
-def manage_inports():
-    import transformers
-    if transformers.__version__ == '4.40.2':
-        return True
-    else:
-        pip.main(['install', 'transformers==4.40.2'])
-        return False
 
 def count_flops_minicpm(model_name,
                         image,
                         prompt,
+                        seq_len=128,
                         device = 'cuda',
                         max_new_tokens = 1024,
                         num_slices = None):
-
-    installed = manage_inports()
-    if not installed:
-        print('Transformers package version has been changed, please re-run the command')
-        return
-
-    from transformers import AutoModel, AutoTokenizer, AutoProcessor
 
     model = AutoModel.from_pretrained(model_name, trust_remote_code=True, torch_dtype=torch.bfloat16, attn_implementation='sdpa')
     model = model.to(device=device, dtype=torch.bfloat16)
     tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
 
     if model_name == "openbmb/MiniCPM-V":
-        inputs = get_inputs_minicpmv(image, model, tokenizer, prompt, max_new_tokens)
+        inputs = get_inputs_minicpmv(image, model, tokenizer, prompt, seq_len, max_new_tokens)
 
     elif model_name == "openbmb/MiniCPM-V-2":
-        inputs = get_inputs_minicpmv_2(image, model, tokenizer, prompt, max_new_tokens, num_slices)
+        inputs = get_inputs_minicpmv_2(image, model, tokenizer, prompt, seq_len, max_new_tokens, num_slices)
 
     elif model_name == "openbmb/MiniCPM-V-2_6":
-        inputs = get_inputs_minicpmv_2_6(image, model, tokenizer, prompt, max_new_tokens, num_slices)
+        inputs = get_inputs_minicpmv_2_6(image, model, tokenizer, prompt, seq_len, max_new_tokens, num_slices)
 
     elif model_name == "openbmb/MiniCPM-Llama3-V-2_5":
-        inputs = get_inputs_minicpmv_2_5_llama3(image, model, tokenizer, prompt, max_new_tokens, num_slices)
+        inputs = get_inputs_minicpmv_2_5_llama3(image, model, tokenizer, prompt, seq_len, max_new_tokens, num_slices)
 
     else:
         print("Model not recognized. Available models from MiniCPM are openbmb/MiniCPM-V, openbmb/MiniCPM-V-2, openbmb/MiniCPM-V-2_6 are openbmb/MiniCPM-Llama3-V-2_5")
 
-    calculate_flops(model=model,
-                    forward_mode = 'generate',
-                    kwargs = inputs,
-                    output_precision = 4,
-                    output_unit = 'T')
+    _, _, _, result = calculate_flops(model=model,
+                                      forward_mode='generate',
+                                      kwargs=inputs,
+                                      output_precision=4,
+                                      output_unit='T')
+
+    return result
