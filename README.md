@@ -14,44 +14,56 @@ Activate the environment:
 conda activate <env>
 ```
 
+Install the transformer version according to the model that you want to run:
+```
+pip install transformers==<version>
+```
+Versions corresponding to each model can be seen in the table of supported models.
+
 ## Supported models
 The aim of this tool is to evaluate the complexity of low-weight VLMs. For this reason and due to the resources available, it has only been tested with low-weight models. However, it should also work with high-weight models if they are from the same collection.
 The set of models supported and tested is the following, future methods will also be available (f.i. VILA):
-| Collection      | Model                       | Name                                      | Link                                                                   |
-| --------------- | --------------------------- | ----------------------------------------- | ---------------------------------------------------------------------- |
-| MiniCPM-V       | MiniCPM-V 1.0               | openbmb/MiniCPM-V                         | [🤗](https://huggingface.co/openbmb/MiniCPM-V)                         |
-| MiniCPM-V       | MiniCPM-V 2.0               | openbmb/MiniCPM-V-2                       | [🤗](https://huggingface.co/openbmb/MiniCPM-V-2)                       |
-| MiniCPM-V       | MiniCPM-V 2.6               | openbmb/MiniCPM-V-2_6                     | [🤗](https://huggingface.co/openbmb/MiniCPM-V-2_6)                     |
-| MiniCPM-V       | MiniCPM-Llama3-V 2.5        | openbmb/MiniCPM-Llama3-V-2_5              | [🤗](https://huggingface.co/openbmb/MiniCPM-Llama3-V-2_5)              |
-| InternVL2       | InternVL2-1B                | OpenGVLab/InternVL2-1B                    | [🤗](https://huggingface.co/OpenGVLab/InternVL2-1B)                    |
-| InternVL2       | InternVL2-2B                | OpenGVLab/InternVL2-1B                    | [🤗](https://huggingface.co/OpenGVLab/InternVL2-2B)                    |
-| InternVL2       | InternVL2-4B                | OpenGVLab/InternVL2-1B                    | [🤗](https://huggingface.co/OpenGVLab/InternVL2-4B)                    |
-| InternVL2       | InternVL2-8B                | OpenGVLab/InternVL2-1B                    | [🤗](https://huggingface.co/OpenGVLab/InternVL2-8B)                    |
-| Phi-Vision      | Phi 3 Vision                | microsoft/Phi-3.5-vision-instruct         | [🤗](https://huggingface.co/microsoft/Phi-3.5-vision-instruct)         |
-| Phi-Vision      | Phi 3.5 Vision              | microsoft/Phi-3-vision-128k-instruct      | [🤗](https://huggingface.co/microsoft/Phi-3-vision-128k-instruct)      |
-| Qwen2-VL        | Qwen2-VL-2B                 | Qwen/Qwen2-VL-2B-Instruct                 | [🤗](https://huggingface.co/Qwen/Qwen2-VL-2B-Instruct)                 |
-| Qwen2-VL        | Qwen2-VL-7B                 | Qwen/Qwen2-VL-7B-Instruct                 | [🤗](https://huggingface.co/Qwen/Qwen2-VL-7B-Instruct)                 |
-| LLaVa-Next      | LLaVa-Next-Mistral-7B       | llava-hf/llava-v1.6-mistral-7b-hf         | [🤗](https://huggingface.co/llava-hf/llava-v1.6-mistral-7b-hf)         |
-| LLaVa-Next      | LLaVa-Next-Vicuna-7B        | llava-hf/llava-v1.6-vicuna-7b-hf          | [🤗](https://huggingface.co/llava-hf/llava-v1.6-vicuna-7b-hf)          |
-| LLaVa-Next      | LLaVa-Next-Llama3-8B        | llava-hf/llama3-llava-next-8b-hf          | [🤗](https://huggingface.co/llava-hf/llama3-llava-next-8b-hf)          |
-| LLaVa-OneVision | LLaVa-OneVision-Qwen2-0.5B  | llava-hf/llava-onevision-qwen2-0.5b-ov-hf | [🤗](https://huggingface.co/llava-hf/llava-onevision-qwen2-0.5b-ov-hf) |
+| Collection      | Name                                      | Link                                                                   | transformers version |
+| --------------- | ----------------------------------------- | ---------------------------------------------------------------------- | -------------------- |
+| MiniCPM-V       | openbmb/MiniCPM-V                         | [🤗](https://huggingface.co/openbmb/MiniCPM-V)                         | 4.40.2               |
+| MiniCPM-V       | openbmb/MiniCPM-V-2                       | [🤗](https://huggingface.co/openbmb/MiniCPM-V-2)                       | 4.40.2               |
+| MiniCPM-V       | openbmb/MiniCPM-V-2_6                     | [🤗](https://huggingface.co/openbmb/MiniCPM-V-2_6)                     | 4.40.2               |
+| MiniCPM-V       | openbmb/MiniCPM-Llama3-V-2_5              | [🤗](https://huggingface.co/openbmb/MiniCPM-Llama3-V-2_5)              | 4.40.2               |
+| InternVL2       | OpenGVLab/InternVL2-1B                    | [🤗](https://huggingface.co/OpenGVLab/InternVL2-1B)                    | 4.40.2               |
+| InternVL2       | OpenGVLab/InternVL2-2B                    | [🤗](https://huggingface.co/OpenGVLab/InternVL2-2B)                    | 4.40.2               |
+| InternVL2       | OpenGVLab/InternVL2-4B                    | [🤗](https://huggingface.co/OpenGVLab/InternVL2-4B)                    | 4.40.2               |
+| InternVL2       | OpenGVLab/InternVL2-8B                    | [🤗](https://huggingface.co/OpenGVLab/InternVL2-8B)                    | 4.40.2               |
+| Phi-Vision      | microsoft/Phi-3-vision-128k-instruct      | [🤗](https://huggingface.co/microsoft/Phi-3.5-vision-instruct)         | 4.40.2               |
+| Phi-Vision      | microsoft/Phi-3.5-vision-instruct         | [🤗](https://huggingface.co/microsoft/Phi-3-vision-128k-instruct)      | 4.40.2               |
+| Qwen2-VL        | Qwen/Qwen2-VL-2B-Instruct                 | [🤗](https://huggingface.co/Qwen/Qwen2-VL-2B-Instruct)                 | git+https://github.com/huggingface/transformers@21fac7abba2a37fae86106f87fcf9974fd1e3830 |
+| Qwen2-VL        | Qwen/Qwen2-VL-7B-Instruct                 | [🤗](https://huggingface.co/Qwen/Qwen2-VL-7B-Instruct)                 | git+https://github.com/huggingface/transformers@21fac7abba2a37fae86106f87fcf9974fd1e3830 |
+| LLaVa-Next      | llava-hf/llava-v1.6-mistral-7b-hf         | [🤗](https://huggingface.co/llava-hf/llava-v1.6-mistral-7b-hf)         | 4.40.2               |
+| LLaVa-Next      | llava-hf/llava-v1.6-vicuna-7b-hf          | [🤗](https://huggingface.co/llava-hf/llava-v1.6-vicuna-7b-hf)          | 4.40.2               |
+| LLaVa-Next      | llava-hf/llama3-llava-next-8b-hf          | [🤗](https://huggingface.co/llava-hf/llama3-llava-next-8b-hf)          | 4.40.2               |
+| LLaVa-OneVision | llava-hf/llava-onevision-qwen2-0.5b-ov-hf | [🤗](https://huggingface.co/llava-hf/llava-onevision-qwen2-0.5b-ov-hf) | git+https://github.com/huggingface/transformers@e40bb4845e0eefb52ec1e9cac9c2446ab36aef81 |
+| LLaVa-OneVision | llava-hf/llava-onevision-qwen2-0.5b-si-hf | [🤗](https://huggingface.co/llava-hf/llava-onevision-qwen2-0.5b-si-hf) | git+https://github.com/huggingface/transformers@e40bb4845e0eefb52ec1e9cac9c2446ab36aef81 |
+| LLaVa-OneVision | llava-hf/llava-onevision-qwen2-7b-ov-hf   | [🤗](https://huggingface.co/llava-hf/llava-onevision-qwen2-7b-ov-hf)   | git+https://github.com/huggingface/transformers@e40bb4845e0eefb52ec1e9cac9c2446ab36aef81 |
+| LLaVa-OneVision | llava-hf/llava-onevision-qwen2-7b-si-hf   | [🤗](https://huggingface.co/llava-hf/llava-onevision-qwen2-7b-si-hf)   | git+https://github.com/huggingface/transformers@e40bb4845e0eefb52ec1e9cac9c2446ab36aef81 |
 
 ## Execution
 To run the tool, please run the following command:
 ```
 python estimate_complexity.py \
 --model-name openbmb/MiniCPM-V \
---image-file ./assets/airplane.jpeg \
---query "Tell me the model of this aircraft." \
---max_new_tokens" 1024 \
+--image-file "" \
+--query "" \
+--seq_len 128 \
+--max_new_tokens" 1 \
 --device cuda \
---num_slices 4
+--output-file ""
 ```
 
 Parameters:
 * `--model-name`: name of the model. See Supported models for available names. Default openbmb/MiniCPM-V.
-* `--image-file`: path to the image to be used in the complexity calculation.
-* `--query`: text query to be used in the complexity calculation.
-* `--max_new_tokens`: maximum number of new tokens. Default to 1024.
+* `--image-file`: path to the image to be used in the complexity calculation. If no image file is provided, then a dummy black image of resolution 1920x1080 is used. Default "".
+* `--query`: text query to be used in the complexity calculation. If no query is provided, the dummy empty query is used and`seq_len` is used. Default "".
+* `--seq_len`: number of padding tokens that will be added to the text input. Default 128.
+* `--max_new_tokens`: maximum number of output tokens. Default to 1.
 * `--device`: device where the calculation will be performed. Default to cuda.
-* `--num_slices`: in the models where the input image is sliced into parts for better resolution and aspect ratio, the number of slices or maximum number of slices can be set. Default to 4.
+* `--num_slices`: in the models where the input image is sliced into parts for better resolution and aspect ratio, the number of slices or maximum number of slices can be set. If it is not set, the default value of each model is used. Default to None.
+* `--output-file`: filename where the text output will be writen. In the case that the output file is not set, the output will be printed. Default "".
