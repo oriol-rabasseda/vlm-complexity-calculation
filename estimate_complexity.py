@@ -71,7 +71,7 @@ def select_model(model_name="openbmb/MiniCPM-V",
                                        max_new_tokens=max_new_tokens
                                        )
 
-    elif "VILA" in model_name:
+    elif "Efficient-Large-Model" in model_name:
         from VILA.calculate_flops import count_flops_vila
         result = count_flops_vila(model_name=model_name,
                                   image=image,

@@ -28,3 +28,7 @@ from estimate_complexity import select_model
 ### Qwen2-VL ###
 #select_model("Qwen/Qwen2-VL-2B-Instruct", print_file="outputs/Qwen2/Qwen2-VL-2B-Instruct.txt")
 #select_model("Qwen/Qwen2-VL-7B-Instruct", print_file="outputs/Qwen2/Qwen2-VL-7B-Instruct.txt")
+
+### VILA ###
+#select_model("Efficient-Large-Model/VILA1.5-3b", print_file="outputs/VILA/VILA1.5-3b.txt")
+#select_model("Efficient-Large-Model/Llama-3-VILA1.5-8B", print_file="outputs/VILA/Llama-3-VILA1.5-8B.txt")
