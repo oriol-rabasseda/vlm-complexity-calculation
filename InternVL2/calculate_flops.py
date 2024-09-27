@@ -69,4 +69,8 @@ def count_flops_internvl2(model_name,
                                       kwargs = generation_config,
                                       output_precision = 4,
                                       output_unit = 'T')
+
+    result += '\nMemory usage:\t' + str(round(torch.cuda.max_memory_allocated(device=device)/2**30, 4)) + ' GBytes'
+    torch.cuda.reset_peak_memory_stats(device=device)
+
     return result

@@ -51,5 +51,8 @@ def count_flops_llavanext(model_name,
                                       kwargs = inputs,
                                       output_precision = 4,
                                       output_unit = 'T')
+
+    result += '\nMemory usage:\t' + str(round(torch.cuda.max_memory_allocated(device=device)/2**30, 4)) + ' GBytes'
+    torch.cuda.reset_peak_memory_stats(device=device)
     
     return result

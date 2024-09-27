@@ -99,3 +99,5 @@ Phi3VForCausalLM(
   (lm_head): Linear(98.5 M = 2.3754% Params, 88.26 GMACs = 1.9768% MACs, 176.51 GFLOPS = 1.861% FLOPs, in_features=3072, out_features=32064, bias=False)
 )
 ---------------------------------------------------------------------------------------------------
+
+Memory usage:	8.6565 GBytes
