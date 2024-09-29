@@ -1,4 +1,3 @@
-from qwen_vl_utils import process_vision_info
 from calflops import calculate_flops
 import torch
 from utils import *
@@ -23,8 +22,7 @@ def count_flops_qwen2(model_name,
             "role": "user",
             "content": [
                 {
-                    "type": "image",
-                    "image": image,
+                    "type": "image"
                 },
                 {"type": "text", "text": prompt},
             ],
@@ -35,15 +33,13 @@ def count_flops_qwen2(model_name,
     text = processor.apply_chat_template(
         messages, tokenize=False, add_generation_prompt=True
     )
-    image_inputs, video_inputs = process_vision_info(messages)
     inputs = processor(
         text=[text],
-        images=image_inputs,
-        videos=video_inputs,
+        images=[image],
         padding=True,
         return_tensors="pt",
     )
-    inputs = inputs
+    inputs = inputs.to(device)
     inputs['max_new_tokens'] = max_new_tokens
 
     if prompt == "":
