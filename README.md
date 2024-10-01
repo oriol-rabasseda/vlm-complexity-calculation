@@ -26,29 +26,17 @@ The aim of this tool is to evaluate the complexity of low-weight VLMs. For this 
 
 The set of models supported and tested is as follows, with future methods also being available (e.g., VILA). If a model works with Transformers 4.45.1 (the latest version currently), it will probably work with future releases.
 
-| Collection      | Name                                      | Link                                                                   | transformers version |
-| --------------- | ----------------------------------------- | ---------------------------------------------------------------------- | -------------------- |
-| MiniCPM-V       | openbmb/MiniCPM-V                         | [🤗](https://huggingface.co/openbmb/MiniCPM-V)                         | 4.40.2               |
-| MiniCPM-V       | openbmb/MiniCPM-V-2                       | [🤗](https://huggingface.co/openbmb/MiniCPM-V-2)                       | 4.40.2               |
-| MiniCPM-V       | openbmb/MiniCPM-V-2_6                     | [🤗](https://huggingface.co/openbmb/MiniCPM-V-2_6)                     | 4.40.2, 4.45.1       |
-| MiniCPM-V       | openbmb/MiniCPM-Llama3-V-2_5              | [🤗](https://huggingface.co/openbmb/MiniCPM-Llama3-V-2_5)              | 4.40.2, 4.45.1       |
-| InternVL2       | OpenGVLab/InternVL2-1B                    | [🤗](https://huggingface.co/OpenGVLab/InternVL2-1B)                    | 4.40.2, 4.45.1       |
-| InternVL2       | OpenGVLab/InternVL2-2B                    | [🤗](https://huggingface.co/OpenGVLab/InternVL2-2B)                    | 4.40.2, 4.45.1       |
-| InternVL2       | OpenGVLab/InternVL2-4B                    | [🤗](https://huggingface.co/OpenGVLab/InternVL2-4B)                    | 4.40.2, 4.45.1       |
-| InternVL2       | OpenGVLab/InternVL2-8B                    | [🤗](https://huggingface.co/OpenGVLab/InternVL2-8B)                    | 4.40.2, 4.45.1       |
-| Phi-Vision      | microsoft/Phi-3-vision-128k-instruct      | [🤗](https://huggingface.co/microsoft/Phi-3.5-vision-instruct)         | 4.40.2, 4.45.1       |
-| Phi-Vision      | microsoft/Phi-3.5-vision-instruct         | [🤗](https://huggingface.co/microsoft/Phi-3-vision-128k-instruct)      | 4.40.2, 4.45.1       |
-| Qwen2-VL        | Qwen/Qwen2-VL-2B-Instruct                 | [🤗](https://huggingface.co/Qwen/Qwen2-VL-2B-Instruct)                 | 4.45.1               |
-| Qwen2-VL        | Qwen/Qwen2-VL-7B-Instruct                 | [🤗](https://huggingface.co/Qwen/Qwen2-VL-7B-Instruct)                 | 4.45.1               |
-| LLaVa-Next      | llava-hf/llava-v1.6-mistral-7b-hf         | [🤗](https://huggingface.co/llava-hf/llava-v1.6-mistral-7b-hf)         | 4.40.2               |
-| LLaVa-Next      | llava-hf/llava-v1.6-vicuna-7b-hf          | [🤗](https://huggingface.co/llava-hf/llava-v1.6-vicuna-7b-hf)          | 4.40.2               |
-| LLaVa-Next      | llava-hf/llama3-llava-next-8b-hf          | [🤗](https://huggingface.co/llava-hf/llama3-llava-next-8b-hf)          | 4.40.2               |
-| LLaVa-OneVision | llava-hf/llava-onevision-qwen2-0.5b-ov-hf | [🤗](https://huggingface.co/llava-hf/llava-onevision-qwen2-0.5b-ov-hf) | 4.45.1               |
-| LLaVa-OneVision | llava-hf/llava-onevision-qwen2-0.5b-si-hf | [🤗](https://huggingface.co/llava-hf/llava-onevision-qwen2-0.5b-si-hf) | 4.45.1               |
-| LLaVa-OneVision | llava-hf/llava-onevision-qwen2-7b-ov-hf   | [🤗](https://huggingface.co/llava-hf/llava-onevision-qwen2-7b-ov-hf)   | 4.45.1               |
-| LLaVa-OneVision | llava-hf/llava-onevision-qwen2-7b-si-hf   | [🤗](https://huggingface.co/llava-hf/llava-onevision-qwen2-7b-si-hf)   | 4.45.1               |
-| VILA            | Efficient-Large-Model/VILA1.5-3b          | [🤗](https://huggingface.co/Efficient-Large-Model/VILA1.5-3b)          | 4.40.2               |
-| VILA            | Efficient-Large-Model/Llama-3-VILA1.5-8B  | [🤗](https://huggingface.co/Efficient-Large-Model/Llama-3-VILA1.5-8B)  | 4.40.2               |
+| Collection       | Model name                                                                                                    | transformers version |
+| ---------------- | ------------------------------------------------------------------------------------------------------------- | -------------- |
+| MiniCPM-V 1&2    | openbmb/MiniCPM-V <br> openbmb/MiniCPM-V-2                                                                    | 4.40.2         |
+| MiniCPM-V 2.5&2.6| openbmb/MiniCPM-Llama3-V-2_5 <br> openbmb/MiniCPM-V-2_6                                                                                         | 4.40.2, 4.45.1 |
+| InternVL2        | OpenGVLab/InternVL2-1B <br> OpenGVLab/InternVL2-2B <br> OpenGVLab/InternVL2-4B <br> OpenGVLab/InternVL2-8B    | 4.40.2, 4.45.1 |
+| Phi-Vision       | microsoft/Phi-3-vision-128k-instruct <br> microsoft/Phi-3.5-vision-instruct                                   | 4.40.2, 4.45.1 |
+| Qwen2-VL         | Qwen/Qwen2-VL-2B-Instruct <br> Qwen/Qwen2-VL-7B-Instruct                                                      | 4.45.1         |
+| LLaVa-Next       | llava-hf/llava-v1.6-mistral-7b-hf <br> llava-hf/llava-v1.6-vicuna-7b-hf <br> llava-hf/llama3-llava-next-8b-hf | 4.40.2         |
+| LLaVa-OneVision  | llava-hf/llava-onevision-qwen2-0.5b-ov-hf <br> llava-hf/llava-onevision-qwen2-0.5b-si-hf<br> llava-hf/llava-onevision-qwen2-7b-ov-hf <br> llava-hf/llava-onevision-qwen2-7b-si-hf  | 4.45.1 |
+| VILA             | Efficient-Large-Model/VILA1.5-3b <br> Efficient-Large-Model/Llama-3-VILA1.5-8B                                | 4.40.2         |
+
 
 ## Execution
 To run the tool, please run the following command:
