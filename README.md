@@ -21,29 +21,32 @@ pip install transformers==<version>
 Versions corresponding to each model can be seen in the table of supported models.
 
 ## Supported models
-The aim of this tool is to evaluate the complexity of low-weight VLMs. For this reason and due to the resources available, it has only been tested with low-weight models. However, it should also work with high-weight models if they are from the same collection.
-The set of models supported and tested is the following, future methods will also be available (f.i. VILA):
+
+The aim of this tool is to evaluate the complexity of low-weight VLMs. For this reason, and due to the resources available, it has only been tested with low-weight models. However, it should also work with high-weight models if they are from the same collection.
+
+The set of models supported and tested is as follows, with future methods also being available (e.g., VILA). If a model works with Transformers 4.45.1 (the latest version currently), it will probably work with future releases.
+
 | Collection      | Name                                      | Link                                                                   | transformers version |
 | --------------- | ----------------------------------------- | ---------------------------------------------------------------------- | -------------------- |
 | MiniCPM-V       | openbmb/MiniCPM-V                         | [🤗](https://huggingface.co/openbmb/MiniCPM-V)                         | 4.40.2               |
 | MiniCPM-V       | openbmb/MiniCPM-V-2                       | [🤗](https://huggingface.co/openbmb/MiniCPM-V-2)                       | 4.40.2               |
-| MiniCPM-V       | openbmb/MiniCPM-V-2_6                     | [🤗](https://huggingface.co/openbmb/MiniCPM-V-2_6)                     | 4.40.2               |
-| MiniCPM-V       | openbmb/MiniCPM-Llama3-V-2_5              | [🤗](https://huggingface.co/openbmb/MiniCPM-Llama3-V-2_5)              | 4.40.2               |
-| InternVL2       | OpenGVLab/InternVL2-1B                    | [🤗](https://huggingface.co/OpenGVLab/InternVL2-1B)                    | 4.40.2               |
-| InternVL2       | OpenGVLab/InternVL2-2B                    | [🤗](https://huggingface.co/OpenGVLab/InternVL2-2B)                    | 4.40.2               |
-| InternVL2       | OpenGVLab/InternVL2-4B                    | [🤗](https://huggingface.co/OpenGVLab/InternVL2-4B)                    | 4.40.2               |
-| InternVL2       | OpenGVLab/InternVL2-8B                    | [🤗](https://huggingface.co/OpenGVLab/InternVL2-8B)                    | 4.40.2               |
-| Phi-Vision      | microsoft/Phi-3-vision-128k-instruct      | [🤗](https://huggingface.co/microsoft/Phi-3.5-vision-instruct)         | 4.40.2               |
-| Phi-Vision      | microsoft/Phi-3.5-vision-instruct         | [🤗](https://huggingface.co/microsoft/Phi-3-vision-128k-instruct)      | 4.40.2               |
-| Qwen2-VL        | Qwen/Qwen2-VL-2B-Instruct                 | [🤗](https://huggingface.co/Qwen/Qwen2-VL-2B-Instruct)                 | git+https://github.com/huggingface/transformers@21fac7abba2a37fae86106f87fcf9974fd1e3830 |
-| Qwen2-VL        | Qwen/Qwen2-VL-7B-Instruct                 | [🤗](https://huggingface.co/Qwen/Qwen2-VL-7B-Instruct)                 | git+https://github.com/huggingface/transformers@21fac7abba2a37fae86106f87fcf9974fd1e3830 |
+| MiniCPM-V       | openbmb/MiniCPM-V-2_6                     | [🤗](https://huggingface.co/openbmb/MiniCPM-V-2_6)                     | 4.40.2, 4.45.1       |
+| MiniCPM-V       | openbmb/MiniCPM-Llama3-V-2_5              | [🤗](https://huggingface.co/openbmb/MiniCPM-Llama3-V-2_5)              | 4.40.2, 4.45.1       |
+| InternVL2       | OpenGVLab/InternVL2-1B                    | [🤗](https://huggingface.co/OpenGVLab/InternVL2-1B)                    | 4.40.2, 4.45.1       |
+| InternVL2       | OpenGVLab/InternVL2-2B                    | [🤗](https://huggingface.co/OpenGVLab/InternVL2-2B)                    | 4.40.2, 4.45.1       |
+| InternVL2       | OpenGVLab/InternVL2-4B                    | [🤗](https://huggingface.co/OpenGVLab/InternVL2-4B)                    | 4.40.2, 4.45.1       |
+| InternVL2       | OpenGVLab/InternVL2-8B                    | [🤗](https://huggingface.co/OpenGVLab/InternVL2-8B)                    | 4.40.2, 4.45.1       |
+| Phi-Vision      | microsoft/Phi-3-vision-128k-instruct      | [🤗](https://huggingface.co/microsoft/Phi-3.5-vision-instruct)         | 4.40.2, 4.45.1       |
+| Phi-Vision      | microsoft/Phi-3.5-vision-instruct         | [🤗](https://huggingface.co/microsoft/Phi-3-vision-128k-instruct)      | 4.40.2, 4.45.1       |
+| Qwen2-VL        | Qwen/Qwen2-VL-2B-Instruct                 | [🤗](https://huggingface.co/Qwen/Qwen2-VL-2B-Instruct)                 | 4.45.1               |
+| Qwen2-VL        | Qwen/Qwen2-VL-7B-Instruct                 | [🤗](https://huggingface.co/Qwen/Qwen2-VL-7B-Instruct)                 | 4.45.1               |
 | LLaVa-Next      | llava-hf/llava-v1.6-mistral-7b-hf         | [🤗](https://huggingface.co/llava-hf/llava-v1.6-mistral-7b-hf)         | 4.40.2               |
 | LLaVa-Next      | llava-hf/llava-v1.6-vicuna-7b-hf          | [🤗](https://huggingface.co/llava-hf/llava-v1.6-vicuna-7b-hf)          | 4.40.2               |
 | LLaVa-Next      | llava-hf/llama3-llava-next-8b-hf          | [🤗](https://huggingface.co/llava-hf/llama3-llava-next-8b-hf)          | 4.40.2               |
-| LLaVa-OneVision | llava-hf/llava-onevision-qwen2-0.5b-ov-hf | [🤗](https://huggingface.co/llava-hf/llava-onevision-qwen2-0.5b-ov-hf) | git+https://github.com/huggingface/transformers@e40bb4845e0eefb52ec1e9cac9c2446ab36aef81 |
-| LLaVa-OneVision | llava-hf/llava-onevision-qwen2-0.5b-si-hf | [🤗](https://huggingface.co/llava-hf/llava-onevision-qwen2-0.5b-si-hf) | git+https://github.com/huggingface/transformers@e40bb4845e0eefb52ec1e9cac9c2446ab36aef81 |
-| LLaVa-OneVision | llava-hf/llava-onevision-qwen2-7b-ov-hf   | [🤗](https://huggingface.co/llava-hf/llava-onevision-qwen2-7b-ov-hf)   | git+https://github.com/huggingface/transformers@e40bb4845e0eefb52ec1e9cac9c2446ab36aef81 |
-| LLaVa-OneVision | llava-hf/llava-onevision-qwen2-7b-si-hf   | [🤗](https://huggingface.co/llava-hf/llava-onevision-qwen2-7b-si-hf)   | git+https://github.com/huggingface/transformers@e40bb4845e0eefb52ec1e9cac9c2446ab36aef81 |
+| LLaVa-OneVision | llava-hf/llava-onevision-qwen2-0.5b-ov-hf | [🤗](https://huggingface.co/llava-hf/llava-onevision-qwen2-0.5b-ov-hf) | 4.45.1               |
+| LLaVa-OneVision | llava-hf/llava-onevision-qwen2-0.5b-si-hf | [🤗](https://huggingface.co/llava-hf/llava-onevision-qwen2-0.5b-si-hf) | 4.45.1               |
+| LLaVa-OneVision | llava-hf/llava-onevision-qwen2-7b-ov-hf   | [🤗](https://huggingface.co/llava-hf/llava-onevision-qwen2-7b-ov-hf)   | 4.45.1               |
+| LLaVa-OneVision | llava-hf/llava-onevision-qwen2-7b-si-hf   | [🤗](https://huggingface.co/llava-hf/llava-onevision-qwen2-7b-si-hf)   | 4.45.1               |
 | VILA            | Efficient-Large-Model/VILA1.5-3b          | [🤗](https://huggingface.co/Efficient-Large-Model/VILA1.5-3b)          | 4.40.2               |
 | VILA            | Efficient-Large-Model/Llama-3-VILA1.5-8B  | [🤗](https://huggingface.co/Efficient-Large-Model/Llama-3-VILA1.5-8B)  | 4.40.2               |
 
