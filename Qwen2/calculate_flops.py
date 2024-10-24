@@ -11,7 +11,7 @@ def count_flops_qwen2(model_name,
                     max_new_tokens = 1):
 
     model = Qwen2VLForConditionalGeneration.from_pretrained(
-        model_name, torch_dtype="auto", device_map=device
+        model_name, torch_dtype="auto", device_map='auto'
     )
 
     # default processer
