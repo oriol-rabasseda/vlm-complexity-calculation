@@ -156,12 +156,8 @@ def count_flops_minicpm(model_name,
                         max_new_tokens = 1024,
                         num_slices = None):
 
-    model = AutoModel.from_pretrained(model_name,
-                                      trust_remote_code=True,
-                                      torch_dtype=torch.bfloat16,
-                                      attn_implementation='sdpa',
-                                      device_map='auto')
-    model = model.to(dtype=torch.bfloat16)
+    model = AutoModel.from_pretrained(model_name, trust_remote_code=True, torch_dtype=torch.bfloat16, attn_implementation='sdpa')
+    model = model.to(device=device, dtype=torch.bfloat16)
     tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
 
     if model_name == "openbmb/MiniCPM-V":
