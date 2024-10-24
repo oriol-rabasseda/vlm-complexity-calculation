@@ -28,8 +28,8 @@ The set of models supported and tested is as follows, with future methods also b
 
 | Collection       | Model name                                                                                                    | transformers version |
 | ---------------- | ------------------------------------------------------------------------------------------------------------- | -------------- |
-| MiniCPM-V 1&2    | openbmb/MiniCPM-V <br> openbmb/MiniCPM-V-2                                                                    | 4.40.2         |
-| MiniCPM-V 2.5&2.6| openbmb/MiniCPM-Llama3-V-2_5 <br> openbmb/MiniCPM-V-2_6                                                                                         | 4.40.2, 4.45.1 |
+| MiniCPM-V 1&2    | openbmb/MiniCPM-V <br> openbmb/MiniCPM-V-2                                                                    | 4.40.2, 4.41.2 |
+| MiniCPM-V 2.5&2.6| openbmb/MiniCPM-Llama3-V-2_5 <br> openbmb/MiniCPM-V-2_6                                                       | 4.40.2, 4.45.1 |
 | InternVL2        | OpenGVLab/InternVL2-1B <br> OpenGVLab/InternVL2-2B <br> OpenGVLab/InternVL2-4B <br> OpenGVLab/InternVL2-8B    | 4.40.2, 4.45.1 |
 | Phi-Vision       | microsoft/Phi-3-vision-128k-instruct <br> microsoft/Phi-3.5-vision-instruct                                   | 4.40.2, 4.45.1 |
 | Qwen2-VL         | Qwen/Qwen2-VL-2B-Instruct <br> Qwen/Qwen2-VL-7B-Instruct                                                      | 4.45.1         |
