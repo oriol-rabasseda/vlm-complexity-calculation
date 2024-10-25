@@ -20,7 +20,7 @@ def count_flops_internvl2(model_name,
         model_name,
         torch_dtype=torch.bfloat16,
         low_cpu_mem_usage=True,
-        attn_implementation='flash_attention_2',
+        use_flash_attn=True,
         trust_remote_code=True,
         device_map='auto').eval()
     #model.to(device=device)
