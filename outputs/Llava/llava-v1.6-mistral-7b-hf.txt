@@ -1,0 +1,101 @@
+
+------------------------------------- Calculate Flops Results -------------------------------------
+Notations:
+number of parameters (Params), number of multiply-accumulate operations(MACs),
+number of floating-point operations (FLOPs), floating-point operations per second (FLOPS),
+fwd FLOPs (model forward propagation FLOPs), bwd FLOPs (model backward propagation FLOPs),
+default model backpropagation takes 2.00 times as much computation as forward propagation.
+
+Total Training Params:                                                  7.57 B  
+fwd MACs:                                                               14.606 TMACs
+fwd FLOPs:                                                              31.3536 TFLOPS
+fwd+bwd MACs:                                                           43.818 TMACs
+fwd+bwd FLOPs:                                                          94.0607 TFLOPS
+
+-------------------------------- Detailed Calculated FLOPs Results --------------------------------
+Each module caculated is listed after its name in the following order: 
+params, percentage of total params, MACs, percentage of total MACs, FLOPS, percentage of total FLOPs
+
+Note: 1. A module can have torch.nn.module or torch.nn.functional to compute logits (e.g. CrossEntropyLoss). 
+ They are not counted as submodules in calflops and not to be printed out. However they make up the difference between a parent's MACs and the sum of its submodules'.
+2. Number of floating-point operations is a theoretical estimation, thus FLOPS computed using that could be larger than the maximum system throughput.
+
+LlavaNextForConditionalGeneration(
+  7.57 B = 100% Params, 14.61 TMACs = 100% MACs, 31.35 TFLOPS = 100% FLOPs
+  (vision_tower): CLIPVisionModel(
+    303.51 M = 4.0111% Params, 872.97 GMACs = 5.9768% MACs, 1.75 TFLOPS = 5.5732% FLOPs
+    (vision_model): CLIPVisionTransformer(
+      303.51 M = 4.0111% Params, 872.97 GMACs = 5.9768% MACs, 1.75 TFLOPS = 5.5732% FLOPs
+      (embeddings): CLIPVisionEmbeddings(
+        1.19 M = 0.0158% Params, 1.73 GMACs = 0.0119% MACs, 3.47 GFLOPS = 0.0111% FLOPs
+        (patch_embedding): Conv2d(602.11 K = 0.008% Params, 1.73 GMACs = 0.0119% MACs, 3.47 GFLOPS = 0.0111% FLOPs, 3, 1024, kernel_size=(14, 14), stride=(14, 14), bias=False)
+        (position_embedding): Embedding(590.85 K = 0.0078% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, 577, 1024)
+      )
+      (pre_layrnorm): LayerNorm(2.05 K = 0% Params, 0 MACs = 0% MACs, 14.77 MFLOPS = 0% FLOPs, (1024,), eps=1e-05, elementwise_affine=True)
+      (encoder): CLIPEncoder(
+        302.31 M = 3.9952% Params, 871.24 GMACs = 5.965% MACs, 1.74 TFLOPS = 5.562% FLOPs
+        (layers): ModuleList(
+          (0-23): 24 x CLIPEncoderLayer(
+            12.6 M = 0.1665% Params, 36.3 GMACs = 0.2485% MACs, 72.66 GFLOPS = 0.2318% FLOPs
+            (self_attn): CLIPSdpaAttention(
+              4.2 M = 0.0555% Params, 12.1 GMACs = 0.0828% MACs, 24.2 GFLOPS = 0.0772% FLOPs
+              (k_proj): Linear(1.05 M = 0.0139% Params, 3.03 GMACs = 0.0207% MACs, 6.05 GFLOPS = 0.0193% FLOPs, in_features=1024, out_features=1024, bias=True)
+              (v_proj): Linear(1.05 M = 0.0139% Params, 3.03 GMACs = 0.0207% MACs, 6.05 GFLOPS = 0.0193% FLOPs, in_features=1024, out_features=1024, bias=True)
+              (q_proj): Linear(1.05 M = 0.0139% Params, 3.03 GMACs = 0.0207% MACs, 6.05 GFLOPS = 0.0193% FLOPs, in_features=1024, out_features=1024, bias=True)
+              (out_proj): Linear(1.05 M = 0.0139% Params, 3.03 GMACs = 0.0207% MACs, 6.05 GFLOPS = 0.0193% FLOPs, in_features=1024, out_features=1024, bias=True)
+            )
+            (layer_norm1): LayerNorm(2.05 K = 0% Params, 0 MACs = 0% MACs, 14.77 MFLOPS = 0% FLOPs, (1024,), eps=1e-05, elementwise_affine=True)
+            (mlp): CLIPMLP(
+              8.39 M = 0.1109% Params, 24.2 GMACs = 0.1657% MACs, 48.43 GFLOPS = 0.1545% FLOPs
+              (activation_fn): QuickGELUActivation(0 = 0% Params, 0 MACs = 0% MACs, 23.63 MFLOPS = 0.0001% FLOPs)
+              (fc1): Linear(4.2 M = 0.0555% Params, 12.1 GMACs = 0.0828% MACs, 24.2 GFLOPS = 0.0772% FLOPs, in_features=1024, out_features=4096, bias=True)
+              (fc2): Linear(4.2 M = 0.0554% Params, 12.1 GMACs = 0.0828% MACs, 24.2 GFLOPS = 0.0772% FLOPs, in_features=4096, out_features=1024, bias=True)
+            )
+            (layer_norm2): LayerNorm(2.05 K = 0% Params, 0 MACs = 0% MACs, 14.77 MFLOPS = 0% FLOPs, (1024,), eps=1e-05, elementwise_affine=True)
+          )
+        )
+      )
+      (post_layernorm): LayerNorm(2.05 K = 0% Params, 0 MACs = 0% MACs, 25.6 KFLOPS = 0% FLOPs, (1024,), eps=1e-05, elementwise_affine=True)
+    )
+  )
+  (multi_modal_projector): LlavaNextMultiModalProjector(
+    20.98 M = 0.2773% Params, 60.4 GMACs = 0.4135% MACs, 120.8 GFLOPS = 0.3853% FLOPs
+    (linear_1): Linear(4.2 M = 0.0555% Params, 12.08 GMACs = 0.0827% MACs, 24.16 GFLOPS = 0.0771% FLOPs, in_features=1024, out_features=4096, bias=True)
+    (act): GELUActivation(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+    (linear_2): Linear(16.78 M = 0.2218% Params, 48.32 GMACs = 0.3308% MACs, 96.64 GFLOPS = 0.3082% FLOPs, in_features=4096, out_features=4096, bias=True)
+  )
+  (language_model): MistralForCausalLM(
+    7.24 B = 95.7116% Params, 13.67 TMACs = 93.6097% MACs, 29.49 TFLOPS = 94.0416% FLOPs
+    (model): MistralModel(
+      7.11 B = 93.9759% Params, 13.67 TMACs = 93.6088% MACs, 29.49 TFLOPS = 94.0407% FLOPs
+      (embed_tokens): Embedding(131.33 M = 1.7357% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, 32064, 4096)
+      (layers): ModuleList(
+        (0-31): 32 x MistralDecoderLayer(
+          218.11 M = 2.8825% Params, 427.27 GMACs = 2.9253% MACs, 920.38 GFLOPS = 2.9355% FLOPs
+          (self_attn): MistralFlashAttention2(
+            41.94 M = 0.5543% Params, 82.17 GMACs = 0.5626% MACs, 164.36 GFLOPS = 0.5242% FLOPs
+            (q_proj): Linear(16.78 M = 0.2217% Params, 32.87 GMACs = 0.225% MACs, 65.73 GFLOPS = 0.2097% FLOPs, in_features=4096, out_features=4096, bias=False)
+            (k_proj): Linear(4.19 M = 0.0554% Params, 8.22 GMACs = 0.0563% MACs, 16.43 GFLOPS = 0.0524% FLOPs, in_features=4096, out_features=1024, bias=False)
+            (v_proj): Linear(4.19 M = 0.0554% Params, 8.22 GMACs = 0.0563% MACs, 16.43 GFLOPS = 0.0524% FLOPs, in_features=4096, out_features=1024, bias=False)
+            (o_proj): Linear(16.78 M = 0.2217% Params, 32.87 GMACs = 0.225% MACs, 65.73 GFLOPS = 0.2097% FLOPs, in_features=4096, out_features=4096, bias=False)
+            (rotary_emb): MistralRotaryEmbedding(0 = 0% Params, 125.38 KMACs = 0% MACs, 250.75 KFLOPS = 0% FLOPs)
+          )
+          (mlp): MistralMLP(
+            176.16 M = 2.3281% Params, 345.1 GMACs = 2.3627% MACs, 690.25 GFLOPS = 2.2015% FLOPs
+            (gate_proj): Linear(58.72 M = 0.776% Params, 115.03 GMACs = 0.7876% MACs, 230.07 GFLOPS = 0.7338% FLOPs, in_features=4096, out_features=14336, bias=False)
+            (up_proj): Linear(58.72 M = 0.776% Params, 115.03 GMACs = 0.7876% MACs, 230.07 GFLOPS = 0.7338% FLOPs, in_features=4096, out_features=14336, bias=False)
+            (down_proj): Linear(58.72 M = 0.776% Params, 115.03 GMACs = 0.7876% MACs, 230.07 GFLOPS = 0.7338% FLOPs, in_features=14336, out_features=4096, bias=False)
+            (act_fn): SiLU(0 = 0% Params, 0 MACs = 0% MACs, 28.08 MFLOPS = 0.0001% FLOPs)
+          )
+          (input_layernorm): MistralRMSNorm(4.1 K = 0.0001% Params, 0 MACs = 0% MACs, 32.87 GFLOPS = 0.1049% FLOPs, (4096,), eps=1e-05)
+          (post_attention_layernorm): MistralRMSNorm(4.1 K = 0.0001% Params, 0 MACs = 0% MACs, 32.87 GFLOPS = 0.1049% FLOPs, (4096,), eps=1e-05)
+        )
+      )
+      (norm): MistralRMSNorm(4.1 K = 0.0001% Params, 0 MACs = 0% MACs, 32.87 GFLOPS = 0.1049% FLOPs, (4096,), eps=1e-05)
+    )
+    (lm_head): Linear(131.33 M = 1.7357% Params, 131.33 MMACs = 0.0009% MACs, 262.67 MFLOPS = 0.0008% FLOPs, in_features=4096, out_features=32064, bias=False)
+  )
+)
+---------------------------------------------------------------------------------------------------
+
+Memory usage:	14.807 GBytes

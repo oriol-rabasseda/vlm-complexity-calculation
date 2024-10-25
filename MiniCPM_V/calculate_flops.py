@@ -115,7 +115,7 @@ def get_inputs_minicpmv_2_6(image,
     inputs["max_new_tokens"] = max_new_tokens
 
     if prompt == "":
-        inputs = get_raw_input(processor.tokenizer, seq_len, inputs, device)
+        inputs = get_raw_input(processor.tokenizer, seq_len, inputs, model.device)
 
     if 'image_sizes' in inputs:
         del inputs['image_sizes']
@@ -138,7 +138,7 @@ def get_inputs_minicpmv_2_5_llama3(image,
     inputs = processor(prompt_aux, images, return_tensors="pt").to(model.device)
 
     if prompt == "":
-        inputs = get_raw_input(processor.tokenizer, seq_len, inputs, device)
+        inputs = get_raw_input(processor.tokenizer, seq_len, inputs, model.device)
 
     params = dict()
     params["model_inputs"] = inputs
@@ -156,8 +156,13 @@ def count_flops_minicpm(model_name,
                         max_new_tokens = 1024,
                         num_slices = None):
 
-    model = AutoModel.from_pretrained(model_name, trust_remote_code=True, torch_dtype=torch.bfloat16, attn_implementation='sdpa')
-    model = model.to(device=device, dtype=torch.bfloat16)
+    model = AutoModel.from_pretrained(model_name,
+                                      trust_remote_code=True,
+                                      torch_dtype=torch.bfloat16,
+                                      attn_implementation='flash_attention_2',
+                                      device_map='auto'
+                                      )
+    model = model.to(dtype=torch.bfloat16)
     tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
 
     if model_name == "openbmb/MiniCPM-V":
@@ -181,7 +186,6 @@ def count_flops_minicpm(model_name,
                                       output_precision=4,
                                       output_unit='T')
 
-    result += '\nMemory usage:\t' + str(round(torch.cuda.max_memory_allocated(device=device)/2**30, 4)) + ' GBytes'
-    torch.cuda.reset_peak_memory_stats(device=device)
+    result += '\nMemory usage:\t' + str(round(get_memory()/2**30, 4)) + ' GBytes'
 
     return result

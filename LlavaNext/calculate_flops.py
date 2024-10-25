@@ -27,6 +27,8 @@ def count_flops_llavanext(model_name,
             model_name,
             torch_dtype=torch.float16,
             low_cpu_mem_usage=True,
+            device_map='auto',
+            attn_implementation='flash_attention_2'
         )
 
     else:
@@ -34,9 +36,12 @@ def count_flops_llavanext(model_name,
 
         processor = LlavaNextProcessor.from_pretrained(model_name)
         model = LlavaNextForConditionalGeneration.from_pretrained(model_name,
-                                                              torch_dtype=torch.float16, low_cpu_mem_usage=True)
+                                                              torch_dtype=torch.float16,
+                                                              low_cpu_mem_usage=True,
+                                                              device_map='auto',
+                                                              attn_implementation='flash_attention_2')
 
-    model.to(device)
+    #model.to(device)
 
     prompt_aux = processor.apply_chat_template(conversation, add_generation_prompt=True)
 
@@ -52,7 +57,6 @@ def count_flops_llavanext(model_name,
                                       output_precision = 4,
                                       output_unit = 'T')
 
-    result += '\nMemory usage:\t' + str(round(torch.cuda.max_memory_allocated(device=device)/2**30, 4)) + ' GBytes'
-    torch.cuda.reset_peak_memory_stats(device=device)
+    result += '\nMemory usage:\t' + str(round(get_memory()/2**30, 4)) + ' GBytes'
     
     return result

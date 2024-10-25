@@ -48,3 +48,13 @@ def get_raw_input(model_tokenizer, seq_length, inputs, device='cuda'):
     '''
 
     return inputs_aux
+
+def get_memory():
+    world_size = torch.cuda.device_count()
+    memory = 0
+    for i in range(world_size):
+        device = 'cuda:' + str(i)
+        memory += torch.cuda.max_memory_allocated(device=device)
+        torch.cuda.reset_peak_memory_stats(device=device)
+    
+    return memory    

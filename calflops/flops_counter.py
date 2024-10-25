@@ -119,7 +119,7 @@ def calculate_flops(model,
     calculate_flops_pipline.start_flops_calculate(ignore_list=ignore_modules)
 
     device = next(model.parameters()).device
-    model = model.to(device)
+    #model = model.to(device)
 
     if input_shape is not None:
         assert len(args) == 0 and len(
