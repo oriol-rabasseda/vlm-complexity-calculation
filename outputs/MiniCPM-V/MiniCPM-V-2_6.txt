@@ -1,0 +1,103 @@
+
+------------------------------------- Calculate Flops Results -------------------------------------
+Notations:
+number of parameters (Params), number of multiply-accumulate operations(MACs),
+number of floating-point operations (FLOPs), floating-point operations per second (FLOPS),
+fwd FLOPs (model forward propagation FLOPs), bwd FLOPs (model backward propagation FLOPs),
+default model backpropagation takes 2.00 times as much computation as forward propagation.
+
+Total Training Params:                                                  8.1 B   
+fwd MACs:                                                               8.7643 TMACs
+fwd FLOPs:                                                              18.0824 TFLOPS
+fwd+bwd MACs:                                                           26.2928 TMACs
+fwd+bwd FLOPs:                                                          54.2472 TFLOPS
+
+-------------------------------- Detailed Calculated FLOPs Results --------------------------------
+Each module caculated is listed after its name in the following order: 
+params, percentage of total params, MACs, percentage of total MACs, FLOPS, percentage of total FLOPs
+
+Note: 1. A module can have torch.nn.module or torch.nn.functional to compute logits (e.g. CrossEntropyLoss). 
+ They are not counted as submodules in calflops and not to be printed out. However they make up the difference between a parent's MACs and the sum of its submodules'.
+2. Number of floating-point operations is a theoretical estimation, thus FLOPS computed using that could be larger than the maximum system throughput.
+
+MiniCPMV(
+  8.1 B = 100% Params, 8.76 TMACs = 100% MACs, 18.08 TFLOPS = 100% FLOPs
+  (llm): Qwen2ForCausalLM(
+    7.61 B = 93.9943% Params, 4.88 TMACs = 55.7097% MACs, 10.31 TFLOPS = 57.0395% FLOPs
+    (model): Qwen2Model(
+      7.07 B = 87.2829% Params, 4.88 TMACs = 55.6911% MACs, 10.31 TFLOPS = 57.0215% FLOPs
+      (embed_tokens): Embedding(543.57 M = 6.7114% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, 151666, 3584)
+      (layers): ModuleList(
+        (0-27): 28 x Qwen2DecoderLayer(
+          233.06 M = 2.8775% Params, 174.32 GMACs = 1.989% MACs, 367.9 GFLOPS = 2.0346% FLOPs
+          (self_attn): Qwen2FlashAttention2(
+            29.36 M = 0.3626% Params, 21.96 GMACs = 0.2506% MACs, 43.93 GFLOPS = 0.243% FLOPs
+            (q_proj): Linear(12.85 M = 0.1586% Params, 9.61 GMACs = 0.1096% MACs, 19.22 GFLOPS = 0.1063% FLOPs, in_features=3584, out_features=3584, bias=True)
+            (k_proj): Linear(1.84 M = 0.0227% Params, 1.37 GMACs = 0.0157% MACs, 2.75 GFLOPS = 0.0152% FLOPs, in_features=3584, out_features=512, bias=True)
+            (v_proj): Linear(1.84 M = 0.0227% Params, 1.37 GMACs = 0.0157% MACs, 2.75 GFLOPS = 0.0152% FLOPs, in_features=3584, out_features=512, bias=True)
+            (o_proj): Linear(12.85 M = 0.1586% Params, 9.61 GMACs = 0.1096% MACs, 19.22 GFLOPS = 0.1063% FLOPs, in_features=3584, out_features=3584, bias=False)
+            (rotary_emb): Qwen2RotaryEmbedding(0 = 0% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs)
+          )
+          (mlp): Qwen2MLP(
+            203.69 M = 2.5149% Params, 152.36 GMACs = 1.7384% MACs, 304.74 GFLOPS = 1.6853% FLOPs
+            (gate_proj): Linear(67.9 M = 0.8383% Params, 50.79 GMACs = 0.5795% MACs, 101.57 GFLOPS = 0.5617% FLOPs, in_features=3584, out_features=18944, bias=False)
+            (up_proj): Linear(67.9 M = 0.8383% Params, 50.79 GMACs = 0.5795% MACs, 101.57 GFLOPS = 0.5617% FLOPs, in_features=3584, out_features=18944, bias=False)
+            (down_proj): Linear(67.9 M = 0.8383% Params, 50.79 GMACs = 0.5795% MACs, 101.57 GFLOPS = 0.5617% FLOPs, in_features=18944, out_features=3584, bias=False)
+            (act_fn): SiLU(0 = 0% Params, 0 MACs = 0% MACs, 14.17 MFLOPS = 0.0001% FLOPs)
+          )
+          (input_layernorm): Qwen2RMSNorm(3.58 K = 0% Params, 0 MACs = 0% MACs, 9.61 GFLOPS = 0.0531% FLOPs, (3584,), eps=1e-06)
+          (post_attention_layernorm): Qwen2RMSNorm(3.58 K = 0% Params, 0 MACs = 0% MACs, 9.61 GFLOPS = 0.0531% FLOPs, (3584,), eps=1e-06)
+        )
+      )
+      (norm): Qwen2RMSNorm(3.58 K = 0% Params, 0 MACs = 0% MACs, 9.61 GFLOPS = 0.0531% FLOPs, (3584,), eps=1e-06)
+      (rotary_emb): Qwen2RotaryEmbedding(0 = 0% Params, 47.87 KMACs = 0% MACs, 287.23 KFLOPS = 0% FLOPs)
+    )
+    (lm_head): Linear(543.57 M = 6.7114% Params, 1.63 GMACs = 0.0186% MACs, 3.26 GFLOPS = 0.018% FLOPs, in_features=3584, out_features=151666, bias=False)
+  )
+  (vpm): SiglipVisionTransformer(
+    417.79 M = 5.1585% Params, 3.82 TMACs = 43.6353% MACs, 7.65 TFLOPS = 42.3243% FLOPs
+    (embeddings): SiglipVisionEmbeddings(
+      6.32 M = 0.0781% Params, 6.29 GMACs = 0.0718% MACs, 12.6 GFLOPS = 0.0697% FLOPs
+      (patch_embedding): Conv2d(678.53 K = 0.0084% Params, 6.29 GMACs = 0.0718% MACs, 12.59 GFLOPS = 0.0696% FLOPs, 3, 1152, kernel_size=(14, 14), stride=(14, 14), padding=valid)
+      (position_embedding): Embedding(5.64 M = 0.0697% Params, 0 MACs = 0% MACs, 0 FLOPS = 0% FLOPs, 4900, 1152)
+    )
+    (encoder): SiglipEncoder(
+      411.47 M = 5.0804% Params, 3.82 TMACs = 43.5635% MACs, 7.64 TFLOPS = 42.2543% FLOPs
+      (layers): ModuleList(
+        (0-26): 27 x SiglipEncoderLayer(
+          15.24 M = 0.1882% Params, 141.41 GMACs = 1.6135% MACs, 282.98 GFLOPS = 1.565% FLOPs
+          (self_attn): SiglipFlashAttention2(
+            5.31 M = 0.0656% Params, 49.3 GMACs = 0.5626% MACs, 98.61 GFLOPS = 0.5453% FLOPs
+            (k_proj): Linear(1.33 M = 0.0164% Params, 12.33 GMACs = 0.1406% MACs, 24.65 GFLOPS = 0.1363% FLOPs, in_features=1152, out_features=1152, bias=True)
+            (v_proj): Linear(1.33 M = 0.0164% Params, 12.33 GMACs = 0.1406% MACs, 24.65 GFLOPS = 0.1363% FLOPs, in_features=1152, out_features=1152, bias=True)
+            (q_proj): Linear(1.33 M = 0.0164% Params, 12.33 GMACs = 0.1406% MACs, 24.65 GFLOPS = 0.1363% FLOPs, in_features=1152, out_features=1152, bias=True)
+            (out_proj): Linear(1.33 M = 0.0164% Params, 12.33 GMACs = 0.1406% MACs, 24.65 GFLOPS = 0.1363% FLOPs, in_features=1152, out_features=1152, bias=True)
+          )
+          (layer_norm1): LayerNorm(2.3 K = 0% Params, 0 MACs = 0% MACs, 53.5 MFLOPS = 0.0003% FLOPs, (1152,), eps=1e-06, elementwise_affine=True)
+          (mlp): SiglipMLP(
+            9.92 M = 0.1225% Params, 92.1 GMACs = 1.0509% MACs, 184.25 GFLOPS = 1.0189% FLOPs
+            (activation_fn): PytorchGELUTanh(0 = 0% Params, 0 MACs = 0% MACs, 39.98 MFLOPS = 0.0002% FLOPs)
+            (fc1): Linear(4.96 M = 0.0613% Params, 46.05 GMACs = 0.5254% MACs, 92.1 GFLOPS = 0.5094% FLOPs, in_features=1152, out_features=4304, bias=True)
+            (fc2): Linear(4.96 M = 0.0612% Params, 46.05 GMACs = 0.5254% MACs, 92.1 GFLOPS = 0.5094% FLOPs, in_features=4304, out_features=1152, bias=True)
+          )
+          (layer_norm2): LayerNorm(2.3 K = 0% Params, 0 MACs = 0% MACs, 53.5 MFLOPS = 0.0003% FLOPs, (1152,), eps=1e-06, elementwise_affine=True)
+        )
+      )
+    )
+    (post_layernorm): LayerNorm(2.3 K = 0% Params, 0 MACs = 0% MACs, 53.5 MFLOPS = 0.0003% FLOPs, (1152,), eps=1e-06, elementwise_affine=True)
+  )
+  (resampler): Resampler(
+    68.62 M = 0.8472% Params, 57.41 GMACs = 0.655% MACs, 115.03 GFLOPS = 0.6361% FLOPs
+    (kv_proj): Linear(4.13 M = 0.051% Params, 38.35 GMACs = 0.4375% MACs, 76.7 GFLOPS = 0.4241% FLOPs, in_features=1152, out_features=3584, bias=False)
+    (attn): MultiheadAttention(
+      51.39 M = 0.6346% Params, 11.66 GMACs = 0.133% MACs, 23.32 GFLOPS = 0.129% FLOPs
+      (out_proj): Linear(12.85 M = 0.1586% Params, 7.4 GMACs = 0.0844% MACs, 14.8 GFLOPS = 0.0818% FLOPs, in_features=3584, out_features=3584, bias=True)
+    )
+    (ln_q): LayerNorm(7.17 K = 0.0001% Params, 0 MACs = 0% MACs, 1.15 MFLOPS = 0% FLOPs, (3584,), eps=1e-06, elementwise_affine=True)
+    (ln_kv): LayerNorm(7.17 K = 0.0001% Params, 0 MACs = 0% MACs, 166.44 MFLOPS = 0.0009% FLOPs, (3584,), eps=1e-06, elementwise_affine=True)
+    (ln_post): LayerNorm(7.17 K = 0.0001% Params, 0 MACs = 0% MACs, 10.32 MFLOPS = 0.0001% FLOPs, (3584,), eps=1e-06, elementwise_affine=True)
+  )
+)
+---------------------------------------------------------------------------------------------------
+
+Memory usage:	15.742 GBytes

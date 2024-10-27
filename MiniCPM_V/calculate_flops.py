@@ -147,6 +147,25 @@ def get_inputs_minicpmv_2_5_llama3(image,
 
     return params
 
+def split_model():
+    device_map=dict()
+    device_map['vpm'] = 0
+    device_map['resampler'] = 0
+    device_map['llm.model.embed_tokens'] = 0
+    device_map['llm.model.rotary_emb'] = 0
+    device_map['llm.model.layers.0'] = 0
+
+    for i in range(1, 17):
+        device_map[f'llm.model.layers.{i}'] = 1
+    
+    for i in range(17, 28):
+        device_map[f'llm.model.layers.{i}'] = 0
+    
+    device_map['llm.model.norm'] = 0
+    device_map['llm.lm_head'] = 0
+
+    return device_map
+
 
 def count_flops_minicpm(model_name,
                         image,
@@ -160,7 +179,7 @@ def count_flops_minicpm(model_name,
                                       trust_remote_code=True,
                                       torch_dtype=torch.bfloat16,
                                       attn_implementation='flash_attention_2',
-                                      device_map='auto'
+                                      device_map=split_model()
                                       )
     model = model.to(dtype=torch.bfloat16)
     tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
