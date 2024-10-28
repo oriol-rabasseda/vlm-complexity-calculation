@@ -172,7 +172,7 @@ def count_flops_minicpm(model_name,
                         prompt,
                         seq_len=128,
                         device = 'cuda',
-                        max_new_tokens = 1024,
+                        max_new_tokens = 1,
                         num_slices = None):
 
     model = AutoModel.from_pretrained(model_name,
