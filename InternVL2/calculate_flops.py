@@ -5,6 +5,26 @@ import torch
 from utils import *
 from transformers import AutoModel, AutoTokenizer
 
+def split_model():
+    device_map = dict()
+    
+    device_map['vision_model'] = 0
+    device_map['language_model.model.embed_tokens'] = 0
+    device_map['language_model.model.embed_dropout'] = 0
+    
+    for l in range(13):
+        device_map[f'language_model.model.layers.{l}'] = 0
+    
+    for l in range(13, 31):
+        device_map[f'language_model.model.layers.{l}'] = 1
+    
+    device_map[f'language_model.model.layers.31'] = 0
+    device_map[f'language_model.model.norm'] = 0
+    device_map[f'language_model.lm_head'] = 0
+    device_map['mlp1'] = 0
+
+    return device_map
+
 
 def count_flops_internvl2(model_name,
                           image,
