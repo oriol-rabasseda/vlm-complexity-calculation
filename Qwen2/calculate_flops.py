@@ -1,18 +1,25 @@
 from calflops import calculate_flops
 import torch
 from utils import *
-from transformers import Qwen2VLForConditionalGeneration, AutoTokenizer, AutoProcessor
 
 def count_flops_qwen2(model_name,
                     image,
                     prompt,
                     seq_len=128,
-                    device = 'cuda',
+                    device = 'cuda:0',
                     max_new_tokens = 1):
 
-    model = Qwen2VLForConditionalGeneration.from_pretrained(
-        model_name, torch_dtype="auto", device_map='auto', attn_implementation='flash_attention_2'
-    )
+    if '2.5' in model_name:
+        from transformers import Qwen2_5_VLForConditionalGeneration, AutoTokenizer, AutoProcessor
+        model = Qwen2_5_VLForConditionalGeneration.from_pretrained(
+            model_name, torch_dtype="auto", device_map='cuda:0', attn_implementation="flash_attention_2"
+        )
+    
+    else:
+        from transformers import Qwen2VLForConditionalGeneration, AutoTokenizer, AutoProcessor
+        model = Qwen2VLForConditionalGeneration.from_pretrained(
+            model_name, torch_dtype="auto", device_map='cuda:0', attn_implementation="flash_attention_2"
+        )
 
     # default processer
     processor = AutoProcessor.from_pretrained(model_name)
@@ -31,7 +38,7 @@ def count_flops_qwen2(model_name,
 
     # Preparation for inference
     text = processor.apply_chat_template(
-        messages, tokenize=False, add_generation_prompt=True
+        messages, add_generation_prompt=True
     )
     inputs = processor(
         text=[text],

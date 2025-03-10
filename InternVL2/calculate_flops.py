@@ -9,8 +9,7 @@ def split_model():
     device_map = dict()
     
     device_map['vision_model'] = 0
-    device_map['language_model.model.embed_tokens'] = 0
-    device_map['language_model.model.embed_dropout'] = 0
+    device_map['language_model.model.tok_embeddings'] = 0
     
     for l in range(13):
         device_map[f'language_model.model.layers.{l}'] = 0
@@ -20,7 +19,7 @@ def split_model():
     
     device_map[f'language_model.model.layers.31'] = 0
     device_map[f'language_model.model.norm'] = 0
-    device_map[f'language_model.lm_head'] = 0
+    device_map['language_model.output'] = 0
     device_map['mlp1'] = 0
 
     return device_map
@@ -42,7 +41,7 @@ def count_flops_internvl2(model_name,
         low_cpu_mem_usage=True,
         use_flash_attn=True,
         trust_remote_code=True,
-        device_map='auto').eval()
+        device_map=split_model()).eval()
     #model.to(device=device)
     tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True, use_fast=False)
 

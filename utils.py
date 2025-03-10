@@ -13,13 +13,13 @@ def get_raw_input(model_tokenizer, seq_length, inputs, device='cuda'):
             for input_ids in inputs["input_ids"]:
                 input_ids = input_ids.tolist()
                 pad_token = model_tokenizer.pad_token_id if model_tokenizer.pad_token_id else 0
-                input_ids = input_ids + ([pad_token] * seq_length)
+                input_ids = ([pad_token] * seq_length) + input_ids
                 model_input_ids.append(input_ids)
 
         elif key == "attention_mask":
             for attention_mask in inputs['attention_mask']:
                 attention_mask = attention_mask.tolist()
-                attention_mask = attention_mask + ([0] * seq_length)
+                attention_mask = ([0] * seq_length) + attention_mask
                 model_attention_mask.append(attention_mask)
         elif key == "token_type_ids":
             pad_token_segment_id = 0

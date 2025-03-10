@@ -70,6 +70,27 @@ def select_model(model_name="openbmb/MiniCPM-V",
                                        device=device,
                                        max_new_tokens=max_new_tokens
                                        )
+    
+    elif "AIDC-AI" in model_name:
+        from Ovis2.calculate_flops import count_flops_ovis2
+        result = count_flops_ovis2(model_name=model_name,
+                                       image=image,
+                                       prompt=query,
+                                       seq_len=seq_len,
+                                       device=device,
+                                       max_new_tokens=max_new_tokens
+                                       )
+    
+    elif "deepseek" in model_name:
+        from Deepseek.calculate_flops import count_flops_deepseek
+        result = count_flops_deepseek(model_name=model_name,
+                                       image=image,
+                                       prompt=query,
+                                       seq_len=seq_len,
+                                       device=device,
+                                       max_new_tokens=max_new_tokens
+                                       )
+
 
     elif "Efficient-Large-Model" in model_name:
         from VILA.calculate_flops import count_flops_vila
