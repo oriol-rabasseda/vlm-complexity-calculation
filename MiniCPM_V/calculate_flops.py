@@ -179,7 +179,7 @@ def count_flops_minicpm(model_name,
                                       trust_remote_code=True,
                                       torch_dtype=torch.bfloat16,
                                       attn_implementation='flash_attention_2',
-                                      device_map=split_model()
+                                      device_map='auto'
                                       )
     model = model.to(dtype=torch.bfloat16)
     tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)

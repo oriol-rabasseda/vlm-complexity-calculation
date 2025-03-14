@@ -9,7 +9,7 @@ def count_flops_deepseek(model_name,
                     image,
                     prompt,
                     seq_len=128,
-                    device = 'cuda:0',
+                    device = 'cuda',
                     max_new_tokens = 1):
     
     vl_chat_processor: DeepseekVLV2Processor = DeepseekVLV2Processor.from_pretrained(model_name)
@@ -18,7 +18,6 @@ def count_flops_deepseek(model_name,
     vl_gpt: DeepseekVLV2ForCausalLM = AutoModelForCausalLM.from_pretrained(model_name,
                                                                             trust_remote_code=True,
                                                                             device_map='auto',
-                                                                            max_memory={0: "15GB", 2:"15GB"},
                                                                             torch_dtype=torch.bfloat16)
     
     conversation = [

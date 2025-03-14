@@ -25,7 +25,7 @@ def get_raw_input(model_tokenizer, seq_length, inputs, device='cuda'):
             pad_token_segment_id = 0
             for token_type_ids in inputs['token_type_ids']:
                 token_type_ids = token_type_ids.tolist()
-                token_type_ids = token_type_ids + ([pad_token_segment_id] * padding_length)
+                token_type_ids = token_type_ids + ([pad_token_segment_id] * seq_length)
                 model_token_type_ids.append(token_type_ids)
         '''
         elif key == "position_ids":

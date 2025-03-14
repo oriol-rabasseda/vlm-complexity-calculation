@@ -41,7 +41,7 @@ def count_flops_internvl2(model_name,
         low_cpu_mem_usage=True,
         use_flash_attn=True,
         trust_remote_code=True,
-        device_map=split_model()).eval()
+        device_map='auto').eval()
     #model.to(device=device)
     tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True, use_fast=False)
 

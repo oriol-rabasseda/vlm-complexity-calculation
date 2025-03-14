@@ -53,7 +53,7 @@ from estimate_complexity import select_model
 
 ### Deepseek VL2 ###
 #select_model("deepseek-ai/deepseek-vl2-tiny", print_file="outputs/Deepseek/deepseek-vl2-tiny.txt")
-select_model("deepseek-ai/deepseek-vl2-small", print_file="outputs/Deepseek/deepseek-vl2-small.txt")
+#select_model("deepseek-ai/deepseek-vl2-small", print_file="outputs/Deepseek/deepseek-vl2-small.txt")
 
 ### VILA ###
 #select_model("Efficient-Large-Model/VILA1.5-3b", print_file="outputs/VILA/VILA1.5-3b.txt")

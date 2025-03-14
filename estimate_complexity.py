@@ -18,7 +18,7 @@ def select_model(model_name="openbmb/MiniCPM-V",
 
     result = ""
 
-    if "openbmb" in model_name:
+    if "openbmb" in model_name.lower():
         from MiniCPM_V.calculate_flops import count_flops_minicpm
         result = count_flops_minicpm(model_name=model_name,
                                      image=image,
@@ -29,7 +29,7 @@ def select_model(model_name="openbmb/MiniCPM-V",
                                      num_slices=num_slices
                                      )
 
-    elif "microsoft" in model_name:
+    elif "phi" in model_name.lower():
         from Phi_Vision.calculate_flops import count_flops_phi
         result = count_flops_phi(model_name=model_name,
                                  image=image,
@@ -40,7 +40,7 @@ def select_model(model_name="openbmb/MiniCPM-V",
                                  num_slices=num_slices
                                  )
 
-    elif "OpenGVLab" in model_name:
+    elif "internvl2" in model_name.lower():
         from InternVL2.calculate_flops import count_flops_internvl2
         result = count_flops_internvl2(model_name=model_name,
                                        image=image,
@@ -51,7 +51,7 @@ def select_model(model_name="openbmb/MiniCPM-V",
                                        num_slices=num_slices
                                        )
 
-    elif "Qwen" in model_name:
+    elif "llava-hf" in model_name:
         from Qwen2.calculate_flops import count_flops_qwen2
         result = count_flops_qwen2(model_name=model_name,
                                   image=image,
@@ -61,7 +61,7 @@ def select_model(model_name="openbmb/MiniCPM-V",
                                   max_new_tokens=max_new_tokens
                                   )
 
-    elif "llava-hf" in model_name:
+    elif "qwen2" in model_name.lower():
         from LlavaNext.calculate_flops import count_flops_llavanext
         result = count_flops_llavanext(model_name=model_name,
                                        image=image,
@@ -71,7 +71,7 @@ def select_model(model_name="openbmb/MiniCPM-V",
                                        max_new_tokens=max_new_tokens
                                        )
     
-    elif "AIDC-AI" in model_name:
+    elif "ovis" in model_name.lower():
         from Ovis2.calculate_flops import count_flops_ovis2
         result = count_flops_ovis2(model_name=model_name,
                                        image=image,
@@ -81,7 +81,7 @@ def select_model(model_name="openbmb/MiniCPM-V",
                                        max_new_tokens=max_new_tokens
                                        )
     
-    elif "deepseek" in model_name:
+    elif "deepseek" in model_name.lower():
         from Deepseek.calculate_flops import count_flops_deepseek
         result = count_flops_deepseek(model_name=model_name,
                                        image=image,
@@ -90,16 +90,19 @@ def select_model(model_name="openbmb/MiniCPM-V",
                                        device=device,
                                        max_new_tokens=max_new_tokens
                                        )
-
-
-    elif "Efficient-Large-Model" in model_name:
-        from VILA.calculate_flops import count_flops_vila
-        result = count_flops_vila(model_name=model_name,
-                                  image=image,
-                                  prompt=query,
-                                  device=device,
-                                  max_new_tokens=max_new_tokens
-                                  )
+    
+    else:
+        from AutoModel.calculate_flops import count_flops_automodel
+    try:
+        result = count_flops_automodel(model_name=model_name,
+                                    image=image,
+                                    prompt=query,
+                                    seq_len=seq_len,
+                                    device=device,
+                                    max_new_tokens=max_new_tokens
+                                    )
+    except:
+            result = "Calculation of FLOPs is not supported for this model"
 
     if result != "" and result:
         if print_file != "":

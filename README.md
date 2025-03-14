@@ -1,7 +1,7 @@
 # Complexity calculator for VLMs
 
 ## Introduction
-This tool is designed to compute the theoretical amount of FLOPs(floating-point operations)、MACs(multiply-add operations) and Parameters of Vision Language Models (VLMs). The tool computes all preprocess steps required to run the generation step of the model provided a real input (image + prompt). The models supported must be implemented in Pytorch and available in 🤗Huggingface Platform. The outcome of the tool is the printing of FLOPS, Parameter calculation value and proportion of each submodule of the model. This tool has been built in top of calflops (https://github.com/MrYxJ/calculate-flops.pytorch).
+This tool is designed to estimate the inference-time amount of FLOPs (Floating-Point OPerations), MACs (Multiply-ACcumulate operations), Trainable Parameters and Memory Requirements of Multimodal Large Language Models (MLLMs). The tool performs the preprocessing steps before the generation step of the model provided a real input (image + prompt). Models supported must be implemented in Pytorch and available in 🤗Huggingface Platform. The outcome of the tool is the printing of FLOPS, Trainable Parameters and Memory Requirments broken down by model sub-model. This tool has been built on top of calflops (https://github.com/MrYxJ/calculate-flops.pytorch).
 
 ## Prerequisites
 Create a conda environment with the required packages:
@@ -14,29 +14,33 @@ Activate the environment:
 conda activate <env>
 ```
 
-Install the transformer version according to the model that you want to run:
+Install the transformer version according to the specific model:
 ```
 pip install transformers==<version>
 ```
-Versions corresponding to each model can be seen in the table of supported models.
 
 ## Supported models
 
-The aim of this tool is to evaluate the complexity of low-weight VLMs. For this reason, and due to the resources available, it has only been tested with low-weight models. However, it should also work with high-weight models if they are from the same collection.
+The aim of this tool is to evaluate the complexity of low-weight VLMs. For this reason, and due to the resources available, it has only been tested with low-weight models. The set of models tested is:
 
-The set of models supported and tested is as follows, with future methods also being available (e.g., VILA). If a model works with Transformers 4.45.1 (the latest version currently), it will probably work with future releases.
+| Collection       | Model name  |
+| ---------------- | ----------- |
+| MiniCPM-V        | openbmb/MiniCPM-V <br> openbmb/MiniCPM-V-2 <br> openbmb/MiniCPM-Llama3-V-2_5 <br> openbmb/MiniCPM-V-2_6 <br> openbmb/MiniCPM-o-2_6 |
+| InternVL2        | OpenGVLab/InternVL2-1B <br> OpenGVLab/InternVL2-2B <br> OpenGVLab/InternVL2-4B <br> OpenGVLab/InternVL2-8B |
+| InternVL2.5      | OpenGVLab/InternVL2_5-1B <br> OpenGVLab/InternVL2_5-2B <br> OpenGVLab/InternVL2_5-4B <br> OpenGVLab/InternVL2_5-8B |
+| InternVL2.5 MPO  | OpenGVLab/InternVL2_5-1B-MPO <br> OpenGVLab/InternVL2_5-2B-MPO <br> OpenGVLab/InternVL2_5-4B-MPO <br> OpenGVLab/InternVL2_5-8B-MPO |
+| Phi-Vision       | microsoft/Phi-3-vision-128k-instruct <br> microsoft/Phi-3.5-vision-instruct <br> microsoft/Phi-4-multimodal-instruct |
+| Qwen2-VL         | Qwen/Qwen2-VL-2B-Instruct <br> Qwen/Qwen2-VL-7B-Instruct |
+| Qwen2.5-VL       | Qwen/Qwen2.5-VL-3B-Instruct <br> Qwen/Qwen2.5-VL-7B-Instruct |
+| LLaVa-Next       | llava-hf/llava-v1.6-mistral-7b-hf <br> llava-hf/llava-v1.6-vicuna-7b-hf <br> llava-hf/llama3-llava-next-8b-hf |
+| LLaVa-OneVision  | llava-hf/llava-onevision-qwen2-0.5b-ov-hf <br> llava-hf/llava-onevision-qwen2-0.5b-si-hf <br> llava-hf/llava-onevision-qwen2-7b-ov-hf <br> llava-hf/llava-onevision-qwen2-7b-si-hf |
+| Ovis             | AIDC-AI/Ovis2-1B <br> AIDC-AI/Ovis2-2B <br> AIDC-AI/Ovis2-4B <br> AIDC-AI/Ovis2-8B <br> AIDC-AI/Ovis1.6-Llama3.2-3B |
+| Deepseek-VL2     | deepseek-ai/deepseek-vl2-tiny <br> deepseek-ai/deepseek-vl2-small |
+| Aya Vision       | CohereForAI/aya-vision-8b |
+| Gemma-3          | google/gemma-3-4b-it |
+| Granite-Vision   | ibm-granite/granite-vision-3.2-2b |
 
-| Collection       | Model name                                                                                                    | transformers version |
-| ---------------- | ------------------------------------------------------------------------------------------------------------- | -------------- |
-| MiniCPM-V 1&2    | openbmb/MiniCPM-V <br> openbmb/MiniCPM-V-2                                                                    | 4.40.2, 4.41.2 |
-| MiniCPM-V 2.5&2.6| openbmb/MiniCPM-Llama3-V-2_5 <br> openbmb/MiniCPM-V-2_6                                                       | 4.40.2, 4.45.1 |
-| InternVL2        | OpenGVLab/InternVL2-1B <br> OpenGVLab/InternVL2-2B <br> OpenGVLab/InternVL2-4B <br> OpenGVLab/InternVL2-8B    | 4.40.2, 4.45.1 |
-| Phi-Vision       | microsoft/Phi-3-vision-128k-instruct <br> microsoft/Phi-3.5-vision-instruct                                   | 4.40.2, 4.45.1 |
-| Qwen2-VL         | Qwen/Qwen2-VL-2B-Instruct <br> Qwen/Qwen2-VL-7B-Instruct                                                      | 4.45.1         |
-| LLaVa-Next       | llava-hf/llava-v1.6-mistral-7b-hf <br> llava-hf/llava-v1.6-vicuna-7b-hf <br> llava-hf/llama3-llava-next-8b-hf | 4.40.2         |
-| LLaVa-OneVision  | llava-hf/llava-onevision-qwen2-0.5b-ov-hf <br> llava-hf/llava-onevision-qwen2-0.5b-si-hf<br> llava-hf/llava-onevision-qwen2-7b-ov-hf <br> llava-hf/llava-onevision-qwen2-7b-si-hf  | 4.45.1 |
-| VILA             | Efficient-Large-Model/VILA1.5-3b <br> Efficient-Large-Model/Llama-3-VILA1.5-8B                                | 4.40.2         |
-
+Models supported list might be bigger since heavy-weight models belonging to the same collections should also be supported.
 
 ## Execution
 To run the tool, please run the following command:

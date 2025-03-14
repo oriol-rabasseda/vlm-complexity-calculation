@@ -12,13 +12,13 @@ def count_flops_qwen2(model_name,
     if '2.5' in model_name:
         from transformers import Qwen2_5_VLForConditionalGeneration, AutoTokenizer, AutoProcessor
         model = Qwen2_5_VLForConditionalGeneration.from_pretrained(
-            model_name, torch_dtype="auto", device_map='cuda:0', attn_implementation="flash_attention_2"
+            model_name, torch_dtype="auto", device_map='auto', attn_implementation="flash_attention_2"
         )
     
     else:
         from transformers import Qwen2VLForConditionalGeneration, AutoTokenizer, AutoProcessor
         model = Qwen2VLForConditionalGeneration.from_pretrained(
-            model_name, torch_dtype="auto", device_map='cuda:0', attn_implementation="flash_attention_2"
+            model_name, torch_dtype="auto", device_map='auto', attn_implementation="flash_attention_2"
         )
 
     # default processer

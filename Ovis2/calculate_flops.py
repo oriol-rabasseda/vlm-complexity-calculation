@@ -7,7 +7,7 @@ def count_flops_ovis2(model_name,
                     image,
                     prompt,
                     seq_len=128,
-                    device = 'cuda:0',
+                    device = 'cuda',
                     max_new_tokens = 1):
     
     model = AutoModelForCausalLM.from_pretrained(model_name,
